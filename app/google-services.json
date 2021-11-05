@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1022139054666",
+    "project_id": "santteus-33796",
+    "storage_bucket": "santteus-33796.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022139054666:android:5822842a320f06b59bc4b3",
+        "android_client_info": {
+          "package_name": "com.example.santteus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1022139054666-4chhtcq8591ccsmihtbfejpois3uksav.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCytecYkuk9eWnK1kEpVhAz_tkjKM9Y7a8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1022139054666-4chhtcq8591ccsmihtbfejpois3uksav.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
