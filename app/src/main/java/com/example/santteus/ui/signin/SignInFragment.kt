@@ -34,6 +34,13 @@ class SignInFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        if(auth?.currentUser != null){
+            findNavController().navigate(R.id.action_signInFragment_to_navigation_home)
+        }
+    }
+
     private fun setListeners(){
         binding.btnSignIn.setOnClickListener {
             signIn(viewModel.id.value!!,viewModel.pw.value!!)

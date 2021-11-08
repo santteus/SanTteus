@@ -34,22 +34,4 @@ class RunCompleteFragment : DialogFragment() {
 
     }
 
-
-
-    override fun onStart() {
-        super.onStart()
-        setLayout()
-    }
-
-    private fun setLayout() {
-        requireNotNull(dialog).apply {
-            requireNotNull(window).apply {
-                setLayout(
-                    (resources.displayMetrics.widthPixels * 0.8).toInt(),
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-
-            }
-        }
-    }
 }

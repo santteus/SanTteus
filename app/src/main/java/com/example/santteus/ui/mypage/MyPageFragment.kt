@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.santteus.databinding.FragmentMyPageBinding
+import com.example.santteus.ui.run.dialog.RunCompleteFragment
 
 class MyPageFragment : Fragment() {
 
@@ -30,12 +31,15 @@ class MyPageFragment : Fragment() {
         _binding = FragmentMyPageBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+        binding.btnRun.setOnClickListener {
+            RunCompleteFragment().show(parentFragmentManager,"run")
+        }
+
+
         return root
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
