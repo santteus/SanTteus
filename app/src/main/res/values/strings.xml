@@ -34,6 +34,8 @@
     <string name="run_finish_distance">이동 거리</string>
     <string name="run_finish_time">시간</string>
     <string name="run_finish_step">걸음 수</string>
+    <string name="run_start_finish">운동 종료</string>
+    <string name="run_start_stop">일시 정지</string>
     
 
 

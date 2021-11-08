@@ -21,7 +21,11 @@
         android:id="@+id/navigation_my_page"
         android:name="com.example.santteus.ui.mypage.MyPageFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_my_page" />
+        tools:layout="@layout/fragment_my_page" >
+        <action
+            android:id="@+id/action_navigation_my_page_to_runStartFragment"
+            app:destination="@id/runStartFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.example.santteus.ui.signin.SignInFragment"
@@ -39,4 +43,10 @@
         android:name="com.example.santteus.ui.signup.SignUpFragment"
         android:label="SignUpFragment"
         tools:layout="@layout/fragment_sign_up"/>
+    <dialog
+        android:id="@+id/runStartFragment"
+        android:name="com.example.santteus.ui.run.RunStartFragment"
+        android:label="RunStartFragment"
+        tools:layout="@layout/fragment_run_start"/>
+
 </navigation>
