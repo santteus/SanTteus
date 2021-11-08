@@ -28,6 +28,8 @@ import androidx.core.app.ActivityCompat.startActivityForResult
 
 import android.provider.MediaStore
 import android.util.Log
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 
 
 class SignUpFragment : Fragment() {
@@ -66,7 +68,6 @@ class SignUpFragment : Fragment() {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             startActivityForResult(intent, REQUST_CODE_GALLERY)
-            //startActivityForResult(Intent(Intent.ACTION_PICK),REQUST_CODE_GALLERY)
         }
         binding.btnSignUpCreateUser.setOnClickListener {
             createUser(viewModel.email.value!!,viewModel.password.value!!)
@@ -79,12 +80,9 @@ class SignUpFragment : Fragment() {
                 if (task.isSuccessful) {
 
                     val userId = auth.currentUser?.uid
-                    //val file = Uri.fromFile(File(pathUri))
                     val storageReference: StorageReference = fbStorage.reference
                         .child("usersprofileImages").child("uid/$userId")
                     storageReference.putFile(profile!!).addOnCompleteListener {
-                        val downloadUri: Task<Uri> = it.result?.storage?.downloadUrl as Task<Uri>
-                        //val imageUrl: Uri? = it.result?.downloadUrl
                         if (userId != null) {
                             val user = User(
                                 email,
@@ -92,10 +90,11 @@ class SignUpFragment : Fragment() {
                                 viewModel.birth.value!!,
                                 viewModel.sex.value!!,
                                 viewModel.nickname.value!!,
-                                downloadUri.toString()
+                                it.result.toString()
                             )
                             userRef.child(userId).setValue(user)
                             Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
                         }
                     }
 
@@ -117,7 +116,9 @@ class SignUpFragment : Fragment() {
             if(data?.data == null) return
 
             profile=data.data!!
-            binding.imgUserProfile.setImageURI(profile)
+            Glide.with(this)
+                .load(profile)
+                .into(binding.imgUserProfile)
 
         }
 
