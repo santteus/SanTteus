@@ -65,5 +65,8 @@ dependencies {
     //csv
     implementation 'com.opencsv:opencsv:4.4'
 
+    // google map
+    implementation 'com.google.android.gms:play-services-maps:18.0.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
 }

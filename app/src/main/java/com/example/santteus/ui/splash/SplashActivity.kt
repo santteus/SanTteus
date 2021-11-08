@@ -12,6 +12,7 @@ import com.example.santteus.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
 
+
     private lateinit var  binding :ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,8 +23,6 @@ class SplashActivity : AppCompatActivity() {
             finish()
 
         }, 1000)
-
     }
-
 
 }
