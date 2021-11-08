@@ -24,11 +24,15 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import androidx.core.app.ActivityCompat.startActivityForResult
+
+import android.provider.MediaStore
+import android.util.Log
 
 
 class SignUpFragment : Fragment() {
 
-    private lateinit var auth: FirebaseAuth
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private lateinit var binding : FragmentSignUpBinding
     private val REQUST_CODE_GALLERY=10
 
@@ -52,14 +56,17 @@ class SignUpFragment : Fragment() {
     }
 
     private fun setListeners(){
-        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+        binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when(checkedId){
                 R.id.radio_woman -> viewModel.sex.value=true
                 R.id.radio_man -> viewModel.sex.value=false
             }
         }
         binding.imgUserProfile.setOnClickListener {
-            startActivityForResult(Intent(Intent.ACTION_PICK),REQUST_CODE_GALLERY)
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            startActivityForResult(intent, REQUST_CODE_GALLERY)
+            //startActivityForResult(Intent(Intent.ACTION_PICK),REQUST_CODE_GALLERY)
         }
         binding.btnSignUpCreateUser.setOnClickListener {
             createUser(viewModel.email.value!!,viewModel.password.value!!)
@@ -72,12 +79,12 @@ class SignUpFragment : Fragment() {
                 if (task.isSuccessful) {
 
                     val userId = auth.currentUser?.uid
-
                     //val file = Uri.fromFile(File(pathUri))
                     val storageReference: StorageReference = fbStorage.reference
                         .child("usersprofileImages").child("uid/$userId")
                     storageReference.putFile(profile!!).addOnCompleteListener {
-                        val imageUrl: Uri? = it.result?.downloadUrl
+                        val downloadUri: Task<Uri> = it.result?.storage?.downloadUrl as Task<Uri>
+                        //val imageUrl: Uri? = it.result?.downloadUrl
                         if (userId != null) {
                             val user = User(
                                 email,
@@ -85,7 +92,7 @@ class SignUpFragment : Fragment() {
                                 viewModel.birth.value!!,
                                 viewModel.sex.value!!,
                                 viewModel.nickname.value!!,
-                                imageUrl.toString()
+                                downloadUri.toString()
                             )
                             userRef.child(userId).setValue(user)
                             Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()
@@ -94,7 +101,7 @@ class SignUpFragment : Fragment() {
 
 
                 } else {
-                    Toast.makeText(requireContext(), "회원가입 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "회원가입222 실패", Toast.LENGTH_SHORT).show()
 
                 }
             }
