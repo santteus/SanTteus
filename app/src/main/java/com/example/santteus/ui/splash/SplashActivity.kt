@@ -1,42 +1,29 @@
 package com.example.santteus.ui.splash
 
-
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.example.santteus.MainActivity
 import com.example.santteus.R
-import com.opencsv.CSVReader
-import java.io.BufferedReader
-import java.io.FileReader
-import java.io.InputStreamReader
+import com.example.santteus.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
-    
+
+    private lateinit var  binding :ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding=DataBindingUtil.setContentView(this,R.layout.activity_splash)
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
 
-         var file =  InputStreamReader(resources.openRawResource(R.raw.walk))
-        var reader = BufferedReader(file)
-        var csv= CSVReader(reader)
-
-        FileReader(file.encoding).use { fr ->
-            val dataList = arrayListOf<Array<String>>()
-            //for문을 이용해 데이터 읽기
-            //
-            CSVReader(fr).use {
-                for (data in it) {
-                    dataList.add(data)
-
-                }
-
-
-            }
-
-        }
-
-
-
+        }, 1000)
 
     }
+
+
 }
