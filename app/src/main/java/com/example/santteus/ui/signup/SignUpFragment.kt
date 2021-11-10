@@ -1,67 +1,127 @@
-package com.example.santteus.ui.signin
+package com.example.santteus.ui.signup
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.santteus.R
-import com.example.santteus.databinding.FragmentSignInBinding
+import com.example.santteus.databinding.FragmentSignUpBinding
+import com.example.santteus.domain.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
+import java.io.File
+import androidx.annotation.NonNull
+
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import androidx.core.app.ActivityCompat.startActivityForResult
+
+import android.provider.MediaStore
+import android.util.Log
 
 
-class SignInFragment : Fragment() {
+class SignUpFragment : Fragment() {
 
-    lateinit var binding:FragmentSignInBinding
-    private var auth : FirebaseAuth? = null
-    private val viewModel:SignInViewModel by viewModels()
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private lateinit var binding : FragmentSignUpBinding
+    private val REQUST_CODE_GALLERY=10
+
+    private val database by lazy { FirebaseDatabase.getInstance() }
+    private val userRef = database.getReference("users")
+    private val fbStorage by lazy { FirebaseStorage.getInstance() }
+
+    private val viewModel:SignUpViewModel by viewModels()
+    var profile : Uri? =null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_sign_in, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_sign_up, container, false)
         binding.vm=viewModel
         binding.lifecycleOwner=viewLifecycleOwner
-        auth = FirebaseAuth.getInstance()
         setListeners()
         return binding.root
     }
 
     private fun setListeners(){
-        binding.btnSignIn.setOnClickListener {
-            signIn(viewModel.id.value!!,viewModel.pw.value!!)
-
-        }
-        binding.tvToSignUp.setOnClickListener {
-            findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
-        }
-    }
-    private fun signIn(email: String, password: String) {
-
-        if (email.isNotEmpty() && password.isNotEmpty()) {
-            auth?.signInWithEmailAndPassword(email, password)?.addOnCompleteListener {task->
-                if (task.isSuccessful) {
-                    Toast.makeText(
-                        context, "로그인에 성공 하였습니다.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    findNavController().navigate(R.id.action_signInFragment_to_navigation_home)
-                    //moveMainPage(auth?.currentUser)
-                } else {
-                    Toast.makeText(
-                        context, "로그인에 실패 하였습니다.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId){
+                R.id.radio_woman -> viewModel.sex.value=true
+                R.id.radio_man -> viewModel.sex.value=false
             }
         }
+        binding.imgUserProfile.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            startActivityForResult(intent, REQUST_CODE_GALLERY)
+            //startActivityForResult(Intent(Intent.ACTION_PICK),REQUST_CODE_GALLERY)
+        }
+        binding.btnSignUpCreateUser.setOnClickListener {
+            createUser(viewModel.email.value!!,viewModel.password.value!!)
+        }
     }
+
+    private fun createUser(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+
+                    val userId = auth.currentUser?.uid
+                    //val file = Uri.fromFile(File(pathUri))
+                    val storageReference: StorageReference = fbStorage.reference
+                        .child("usersprofileImages").child("uid/$userId")
+                    storageReference.putFile(profile!!).addOnCompleteListener {
+                        val downloadUri: Task<Uri> = it.result?.storage?.downloadUrl as Task<Uri>
+                        //val imageUrl: Uri? = it.result?.downloadUrl
+                        if (userId != null) {
+                            val user = User(
+                                email,
+                                password,
+                                viewModel.birth.value!!,
+                                viewModel.sex.value!!,
+                                viewModel.nickname.value!!,
+                                downloadUri.toString()
+                            )
+                            userRef.child(userId).setValue(user)
+                            Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+
+                } else {
+                    Toast.makeText(requireContext(), "회원가입222 실패", Toast.LENGTH_SHORT).show()
+
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "회원가입 실패", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == REQUST_CODE_GALLERY && resultCode == Activity.RESULT_OK){
+            if(data?.data == null) return
+
+            profile=data.data!!
+            binding.imgUserProfile.setImageURI(profile)
+
+        }
+
+    }
+
 
 }
