@@ -35,6 +35,16 @@
     <string name="run_finish_time">시간</string>
     <string name="run_finish_step">걸음 수</string>
     
+    <!-- mypage-->
+    <string name="my_page_title">마이페이지</string>
+    <string name="my_page_title_bmi">BMI</string>
+    <string name="my_page_title_exercise">운동량 상위</string>
+    <string name="my_page_title_reword">산책로 뱃지</string>
+    <string name="my_page_license">라이선스</string>
+    <string name="my_page_personal">개인정보처리방침</string>
+    <string name="my_page_service">서비스 이용약관</string>
+    <string name="my_page_logout">로그아웃</string>
+    <string name="my_page_withdrawal">회원탈퇴</string>
 
 
 </resources>
