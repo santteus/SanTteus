@@ -62,46 +62,46 @@ class SignUpFragment : Fragment() {
             startActivityForResult(Intent(Intent.ACTION_PICK),REQUST_CODE_GALLERY)
         }
         binding.btnSignUpCreateUser.setOnClickListener {
-            createUser(viewModel.email.value!!,viewModel.password.value!!)
+            //createUser(viewModel.email.value!!,viewModel.password.value!!)
         }
     }
 
-    private fun createUser(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-
-                    val userId = auth.currentUser?.uid
-
-                    //val file = Uri.fromFile(File(pathUri))
-                    val storageReference: StorageReference = fbStorage.reference
-                        .child("usersprofileImages").child("uid/$userId")
-                    storageReference.putFile(profile!!).addOnCompleteListener {
-                        val imageUrl: Uri? = it.result?.downloadUrl
-                        if (userId != null) {
-                            val user = User(
-                                email,
-                                password,
-                                viewModel.birth.value!!,
-                                viewModel.sex.value!!,
-                                viewModel.nickname.value!!,
-                                imageUrl.toString()
-                            )
-                            userRef.child(userId).setValue(user)
-                            Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-
-                } else {
-                    Toast.makeText(requireContext(), "회원가입 실패", Toast.LENGTH_SHORT).show()
-
-                }
-            }
-            .addOnFailureListener {
-                Toast.makeText(requireContext(), "회원가입 실패", Toast.LENGTH_SHORT).show()
-            }
-    }
+//    private fun createUser(email: String, password: String) {
+//        auth.createUserWithEmailAndPassword(email, password)
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//
+//                    val userId = auth.currentUser?.uid
+//
+//                    //val file = Uri.fromFile(File(pathUri))
+//                    val storageReference: StorageReference = fbStorage.reference
+//                        .child("usersprofileImages").child("uid/$userId")
+//                    storageReference.putFile(profile!!).addOnCompleteListener {
+//                        val imageUrl: Uri? = it.result?.downloadUrl
+//                        if (userId != null) {
+//                            val user = User(
+//                                email,
+//                                password,
+//                                viewModel.birth.value!!,
+//                                viewModel.sex.value!!,
+//                                viewModel.nickname.value!!,
+//                                imageUrl.toString()
+//                            )
+//                            userRef.child(userId).setValue(user)
+//                            Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+//
+//
+//                } else {
+//                    Toast.makeText(requireContext(), "회원가입 실패", Toast.LENGTH_SHORT).show()
+//
+//                }
+//            }
+//            .addOnFailureListener {
+//                Toast.makeText(requireContext(), "회원가입 실패", Toast.LENGTH_SHORT).show()
+//            }
+//    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

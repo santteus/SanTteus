@@ -57,6 +57,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.firebaseui:firebase-ui-storage:3.1.0'
     implementation 'com.google.firebase:firebase-firestore:11.4.2'
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:28.4.1')
+
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+
+    // Declare the dependency for the Firebase SDK for Google Analytics
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     //csv
     implementation 'com.opencsv:opencsv:4.4'

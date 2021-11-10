@@ -3,17 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/activity_add_data.xml" value="0.25364583333333335" />
+        <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/fragment_record.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/bg_run_8_selected.xml" value="0.3609375" />
         <entry key="app/src/main/res/drawable-v24/line_sign_unselected.xml" value="0.3609375" />
         <entry key="app/src/main/res/drawable/bg_rectangle_sign.xml" value="0.2234375" />
         <entry key="app/src/main/res/drawable/bg_run_100.xml" value="0.3609375" />
         <entry key="app/src/main/res/drawable/bg_run_8.xml" value="0.3609375" />
-        <entry key="app/src/main/res/drawable/bg_sign_12.xml" value="0.25729166666666664" />
         <entry key="app/src/main/res/drawable/line_sign.xml" value="0.3609375" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1015639508785189" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3729166666666667" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.302369643423715" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.3015625" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3729166666666667" />
         <entry key="app/src/main/res/layout/fragment_my_page.xml" value="0.3729166666666667" />
         <entry key="app/src/main/res/layout/fragment_record.xml" value="0.3729166666666667" />
         <entry key="app/src/main/res/layout/fragment_run_complete.xml" value="0.3307291666666667" />
