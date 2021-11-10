@@ -13,21 +13,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.santteus.R
 import com.example.santteus.databinding.FragmentSignUpBinding
-import com.example.santteus.domain.User
+import com.example.santteus.domain.entity.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
-import java.io.File
-import androidx.annotation.NonNull
 
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import androidx.core.app.ActivityCompat.startActivityForResult
 
 import android.provider.MediaStore
-import android.util.Log
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 
 
 class SignUpFragment : Fragment() {
@@ -66,10 +61,12 @@ class SignUpFragment : Fragment() {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             startActivityForResult(intent, REQUST_CODE_GALLERY)
-            //startActivityForResult(Intent(Intent.ACTION_PICK),REQUST_CODE_GALLERY)
         }
         binding.btnSignUpCreateUser.setOnClickListener {
             createUser(viewModel.email.value!!,viewModel.password.value!!)
+        }
+        binding.imgbtnSignUpBack.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
@@ -79,23 +76,23 @@ class SignUpFragment : Fragment() {
                 if (task.isSuccessful) {
 
                     val userId = auth.currentUser?.uid
-                    //val file = Uri.fromFile(File(pathUri))
                     val storageReference: StorageReference = fbStorage.reference
                         .child("usersprofileImages").child("uid/$userId")
                     storageReference.putFile(profile!!).addOnCompleteListener {
-                        val downloadUri: Task<Uri> = it.result?.storage?.downloadUrl as Task<Uri>
-                        //val imageUrl: Uri? = it.result?.downloadUrl
+
                         if (userId != null) {
                             val user = User(
                                 email,
                                 password,
                                 viewModel.birth.value!!,
                                 viewModel.sex.value!!,
-                                viewModel.nickname.value!!,
-                                downloadUri.toString()
+                                viewModel.kg.value!!.toInt(),
+                                it.result.toString(),
+                                User.Walk("", "",0,0,0,0)
                             )
                             userRef.child(userId).setValue(user)
                             Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
                         }
                     }
 
@@ -117,7 +114,10 @@ class SignUpFragment : Fragment() {
             if(data?.data == null) return
 
             profile=data.data!!
-            binding.imgUserProfile.setImageURI(profile)
+            Glide.with(this)
+                .load(profile)
+                .circleCrop()
+                .into(binding.imgUserProfile)
 
         }
 

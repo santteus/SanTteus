@@ -11,7 +11,7 @@ import com.example.santteus.R
 import com.example.santteus.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)

@@ -9,7 +9,8 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="240dp"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_sign_12"
     tools:context=".ui.run.dialog.RunCompleteFragment">
 
 
@@ -19,14 +20,24 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/run_complete"
+        android:includeFontPadding="false"
+        android:textColor="@color/santteus_222222"
+        android:textSize="16sp"
+        android:fontFamily="@font/roboto_regular"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_regular"
+        android:includeFontPadding="false"
+        android:textColor="@color/santtues_767676"
+        android:textSize="12sp"
         android:text="@string/run_complete_detail"
         app:layout_constraintEnd_toEndOf="@id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
@@ -37,11 +48,18 @@
         android:layout_width="104dp"
         android:layout_height="32dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="12dp"
-        android:text="@string/run_complete_close"
         android:background="@drawable/bg_run_8"
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto_regular"
+        android:includeFontPadding="false"
+        android:text="@string/run_complete_close"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_run_complete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_run_complete"
@@ -51,8 +69,12 @@
         android:layout_marginBottom="12dp"
         android:background="@drawable/bg_run_8_selected"
         android:text="@string/run_complete_record"
+        android:fontFamily="@font/roboto_regular"
+        android:includeFontPadding="false"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_run_close" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

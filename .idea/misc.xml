@@ -6,22 +6,37 @@
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/activity_add_data.xml" value="0.25364583333333335" />
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/fragment_record.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/bg_run_8_selected.xml" value="0.3609375" />
+        <entry key="app/src/main/res/drawable-v24/bg_run_start_stop_100.xml" value="0.3171875" />
         <entry key="app/src/main/res/drawable-v24/line_sign_unselected.xml" value="0.3609375" />
+        <entry key="app/src/main/res/drawable/bg_bottomsheet_20.xml" value="0.3171875" />
         <entry key="app/src/main/res/drawable/bg_rectangle_sign.xml" value="0.2234375" />
         <entry key="app/src/main/res/drawable/bg_run_100.xml" value="0.3609375" />
         <entry key="app/src/main/res/drawable/bg_run_8.xml" value="0.3609375" />
+<<<<<<< HEAD
+        <entry key="app/src/main/res/drawable/bg_run_start_100.xml" value="0.3171875" />
+        <entry key="app/src/main/res/drawable/bg_run_start_8.xml" value="0.3171875" />
+        <entry key="app/src/main/res/drawable/bg_sign_12.xml" value="0.3171875" />
+        <entry key="app/src/main/res/drawable/line_sign.xml" value="0.3609375" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.11591595087764157" />
+        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.302369643423715" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.17497915506247938" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3729166666666667" />
+        <entry key="app/src/main/res/layout/fragment_my_page.xml" value="0.165" />
+=======
         <entry key="app/src/main/res/drawable/line_sign.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3729166666666667" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.302369643423715" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.3015625" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3729166666666667" />
         <entry key="app/src/main/res/layout/fragment_my_page.xml" value="0.3729166666666667" />
+>>>>>>> 16be7fae53518b1f4cba6a5ac28454d36408cc8e
         <entry key="app/src/main/res/layout/fragment_record.xml" value="0.3729166666666667" />
         <entry key="app/src/main/res/layout/fragment_run_complete.xml" value="0.3307291666666667" />
-        <entry key="app/src/main/res/layout/fragment_run_finish.xml" value="0.34479166666666666" />
+        <entry key="app/src/main/res/layout/fragment_run_finish.xml" value="0.19862092475457552" />
         <entry key="app/src/main/res/layout/fragment_run_start.xml" value="0.34479166666666666" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.284375" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/sheet_run_start.xml" value="0.30104166666666665" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3729166666666667" />
       </map>
     </option>
