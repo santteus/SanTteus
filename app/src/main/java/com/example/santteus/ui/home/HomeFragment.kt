@@ -6,6 +6,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+
 import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,9 +19,12 @@ import com.example.santteus.ui.run.RunFinishFragment
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.text.SimpleDateFormat
 import java.util.*
+import com.google.firebase.database.*
+
 
 class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
 
@@ -40,6 +44,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
     private lateinit var sensorManager :SensorManager
 
     override fun onCreateView(
+
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,6 +56,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
         setListeners()
         setBottomSheet()
         setSensorCount()
+
         return binding.root
     }
 
@@ -132,12 +138,49 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
         })
     }
 
-
     override fun onMapReady(googleMap: GoogleMap) {
         val marker = LatLng(37.568291, 126.997780)
         googleMap.addMarker(MarkerOptions().position(marker).title("여기"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+
+
+        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
+        val myRef : DatabaseReference = database.getReference("road")
+        var latitude: Double
+        var longitude: Double
+        var name: String
+        myRef.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                for (snapshot in dataSnapshot.children) {
+
+                    latitude = snapshot.child("COURS_SPOT_LA").value as Double
+                    longitude = snapshot.child("COURS_SPOT_LO").value as Double
+                    name = snapshot.child("WLK_COURS_NM").value as String
+
+                    val marker = LatLng(latitude,longitude)
+                    googleMap.addMarker(MarkerOptions().position(marker).title(name))
+
+                    // moveCamera 현위치로 수정 필요
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
+                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                //Log.e("MainActivity", String.valueOf(databaseError.toException())); // 에러문 출력
+            }
+        })
+
+
+        //val marker = LatLng(37.568291,126.997780)
+        //googleMap.addMarker(MarkerOptions().position(marker).title("여기"))
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
+        //googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+
     }
 
     override fun onDestroyView() {

@@ -3,27 +3,247 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-
+        <variable
+            name="vm"
+            type="com.example.santteus.ui.mypage.MyPageViewModel" />
     </data>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bg_sign"
         tools:context=".ui.mypage.MyPageFragment">
 
+
         <TextView
-            android:id="@+id/text_notifications"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_mypage_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="75dp"
+            android:text="@string/my_page_title"
+            android:textSize="24sp"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_mypage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_sign_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mypage_title">
+
+            <TextView
+                android:id="@+id/tv_mypage_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="TextView"
+                android:textColor="@color/santteus_FBAB57"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/v_line"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="60dp"
+                android:background="@drawable/line_sign_unselected"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_mypage_id" />
+
+            <TextView
+                android:id="@+id/tv_bmi_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="54dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/my_page_title_bmi"
+                android:textSize="8sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_line" />
+
+            <TextView
+                android:id="@+id/tv_bmi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="32dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="TextView"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tv_bmi_title"
+                app:layout_constraintStart_toStartOf="@+id/tv_bmi_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_bmi_title" />
+
+            <TextView
+                android:id="@+id/tv_exercise_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/my_page_title_exercise"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_bmi_title"
+                app:layout_constraintStart_toEndOf="@+id/tv_bmi_title"
+                app:layout_constraintTop_toTopOf="@+id/tv_bmi_title" />
+
+            <TextView
+                android:id="@+id/tv_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/roboto_bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_bmi"
+                app:layout_constraintEnd_toEndOf="@+id/tv_exercise_title"
+                app:layout_constraintStart_toStartOf="@+id/tv_exercise_title" />
+
+            <TextView
+                android:id="@+id/tv_reword_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="43dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/my_page_title_reword"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_exercise_title"
+                app:layout_constraintStart_toEndOf="@+id/tv_exercise_title"
+                app:layout_constraintTop_toTopOf="@+id/tv_exercise_title" />
+
+            <TextView
+                android:id="@+id/tv_reword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/roboto_bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_bmi"
+                app:layout_constraintEnd_toEndOf="@+id/tv_reword_title"
+                app:layout_constraintStart_toStartOf="@+id/tv_reword_title" />
+
+            <ImageView
+                android:id="@+id/iv_mypage_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_line"
+                app:srcCompat="@drawable/ic_arrow" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/iv_mypage_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="94dp"
+            android:layout_marginEnd="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/user_profile" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_sign_12"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_mypage">
+
+            <TextView
+                android:id="@+id/tv_licence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="20dp"
+                android:text="@string/my_page_license"
+                android:textColor="@color/black" />
+
+            <View
+                android:id="@+id/v_line2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/tv_personal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="20dp"
+                android:text="@string/my_page_personal"
+                android:textColor="@color/black" />
+
+            <View
+                android:id="@+id/v_line3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/tv_service"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="20dp"
+                android:text="@string/my_page_service"
+                android:textColor="@color/black" />
+
+            <View
+                android:id="@+id/v_line4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/tv_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="20dp"
+                android:text="@string/my_page_logout"
+                android:textColor="@color/black" />
+
+            <View
+                android:id="@+id/v_line5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/tv_withdrawal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="20dp"
+                android:text="@string/my_page_withdrawal"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
