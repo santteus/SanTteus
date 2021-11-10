@@ -2,6 +2,7 @@ package com.example.santteus.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.example.santteus.databinding.FragmentHomeBinding
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.database.*
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
@@ -23,6 +25,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mView: MapView
 
     override fun onCreateView(
+
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,16 +36,49 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         mView.onCreate(savedInstanceState)
         mView.getMapAsync(this)
 
+
+
         return binding.root
     }
 
 
-
     override fun onMapReady(googleMap: GoogleMap) {
-        val marker = LatLng(37.568291,126.997780)
-        googleMap.addMarker(MarkerOptions().position(marker).title("여기"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
-        googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+
+        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
+        val myRef : DatabaseReference = database.getReference("road")
+        var latitude: Double
+        var longitude: Double
+        var name: String
+        myRef.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                for (snapshot in dataSnapshot.children) {
+
+                    latitude = snapshot.child("COURS_SPOT_LA").value as Double
+                    longitude = snapshot.child("COURS_SPOT_LO").value as Double
+                    name = snapshot.child("WLK_COURS_NM").value as String
+
+                    val marker = LatLng(latitude,longitude)
+                    googleMap.addMarker(MarkerOptions().position(marker).title(name))
+
+                    // moveCamera 현위치로 수정 필요
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
+                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                //Log.e("MainActivity", String.valueOf(databaseError.toException())); // 에러문 출력
+            }
+        })
+
+
+        //val marker = LatLng(37.568291,126.997780)
+        //googleMap.addMarker(MarkerOptions().position(marker).title("여기"))
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
+        //googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
     }
 
     override fun onDestroyView() {
