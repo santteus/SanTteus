@@ -30,6 +30,10 @@ class RunCompleteFragment : DialogFragment() {
         binding.btnRunClose.setOnClickListener {
             dismiss()
         }
+        binding.btnRunComplete.setOnClickListener {
+            // 기록 보러 가기
+            dismiss()
+        }
 
     }
 

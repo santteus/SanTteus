@@ -7,7 +7,7 @@
 
     <!-- sign -->
     <string name="sign_in_welcom">Welcome!</string>
-    <string name="sign_in_detail">우리 동네 산책로\n 나에게 맞는 산책로를 찾아보세요!</string>
+    <string name="sign_in_detail">우리 동네 산책로\n나에게 맞는 산책로를 찾아보세요!</string>
     <string name="sign_in_login">로그인</string>
     <string name="sign_in_find">아이디/비밀번호 찾기</string>
     <string name="sign_in_no_count">계정이 없으신가요?</string>
@@ -19,7 +19,7 @@
     <string name="sign_up_password">비밀번호 입력</string>
     <string name="sign_up_password_ok">비밀번호 재입력</string>
     <string name="sign_up_birth">생년월일 8글자</string>
-    <string name="sign_up_nickName">닉네임</string>
+    <string name="sign_up_kg">몸무게 00kg</string>
     <string name="sign_up_create_user">계정 생성</string>
     <string name="sign_up_woman">여성</string>
     <string name="sign_up_man">남성</string>

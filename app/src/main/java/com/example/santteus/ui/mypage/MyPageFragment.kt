@@ -8,12 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import com.example.santteus.R
 import com.example.santteus.databinding.FragmentMyPageBinding
-import com.example.santteus.ui.run.RunFinishFragment
-import com.example.santteus.ui.run.RunStartFragment
-import com.example.santteus.ui.run.dialog.RunCompleteFragment
 
 class MyPageFragment : Fragment() {
 
@@ -35,16 +30,12 @@ class MyPageFragment : Fragment() {
         _binding = FragmentMyPageBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.btnRun.setOnClickListener {
-            RunStartFragment().show(childFragmentManager,"runStart")
-           // findNavController().navigate(R.id.action_navigation_my_page_to_runStartFragment)
-        }
-
-
+        val textView: TextView = binding.textNotifications
+        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+            textView.text = it
+        })
         return root
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

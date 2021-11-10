@@ -49,6 +49,14 @@ class SignInFragment : Fragment() {
         binding.tvToSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
         }
+        binding.etSignInId.onFocusChangeListener =
+            View.OnFocusChangeListener { view, hasFocus ->
+                viewModel.isFocus.value = hasFocus
+            }
+        binding.etSignInPassword.onFocusChangeListener =
+            View.OnFocusChangeListener { view, hasFocus ->
+                viewModel.isFocus.value = !hasFocus
+            }
     }
     private fun signIn(email: String, password: String) {
 

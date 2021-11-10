@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.santteus.databinding.FragmentRunFinishBinding
-import com.example.santteus.domain.entity.Walk
+import com.example.santteus.domain.entity.User
 import com.example.santteus.ui.run.dialog.RunCompleteFragment
 import com.google.firebase.database.*
 
@@ -46,7 +46,7 @@ class RunFinishFragment : DialogFragment() {
         myRef.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val listData: MutableList<Walk> = mutableListOf<Walk>()
+
                 //myRef.child("")
                 var sum = 0
                 for (userSnapshot in dataSnapshot.children) {
@@ -63,7 +63,6 @@ class RunFinishFragment : DialogFragment() {
                     //val post: Post? = dataSnapshot.getValue(Post::class.java)
                     if (userSnapshot.child("MESURE_AGRDE_FLAG_NM").value == "10대") {
                         sum += (userSnapshot.child("AVRG_PACE_CO").value as Long).toInt()
-
 
                     }
                     Log.d(

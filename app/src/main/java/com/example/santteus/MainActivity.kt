@@ -22,8 +22,7 @@ import java.text.SimpleDateFormat
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var binding: ActivityMainBinding
-
-
+    private lateinit var sensorManager :SensorManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,24 +45,26 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         }
 
-        var sensorManager= getSystemService(Context.SENSOR_SERVICE) as SensorManager?
+        sensorManager= (getSystemService(Context.SENSOR_SERVICE) as SensorManager?)!!
         val sensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         sensor?.let {
             sensorManager?.registerListener(this@MainActivity, it, SensorManager.SENSOR_DELAY_FASTEST)
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        sensorManager?.unregisterListener(this)
+    }
+
 
 
     override fun onSensorChanged(sensorEvent: SensorEvent?) {
         sensorEvent ?: return
-        // Data 1: According to official documentation, the first value of the `SensorEvent` value is the step count
         sensorEvent.values.firstOrNull()?.let {
             Log.d("aaaa","Step count: $it ")
 
         }
-
-        // Data 2: The number of nanosecond passed since the time of last boot
         val lastDeviceBootTimeInMillis = System.currentTimeMillis() - SystemClock.elapsedRealtime()
         val sensorEventTimeInNanos = sensorEvent.timestamp // The number of nanosecond passed since the time of last boot
         val sensorEventTimeInMillis = sensorEventTimeInNanos / 1000_000

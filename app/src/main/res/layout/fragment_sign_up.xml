@@ -182,16 +182,16 @@
         </RadioGroup>
 
         <EditText
-            android:id="@+id/et_sign_up_nickName"
+            android:id="@+id/et_sign_up_kg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
             android:background="@null"
             android:ems="10"
-            android:hint="@string/sign_up_nickName"
+            android:text="@={vm.kg}"
+            android:hint="@string/sign_up_kg"
             android:inputType="textPersonName"
-            android:text="@={vm.nickname}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/et_sign_up_birth"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
@@ -201,9 +201,9 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@drawable/line_sign_unselected"
-            app:layout_constraintEnd_toEndOf="@+id/et_sign_up_nickName"
-            app:layout_constraintStart_toStartOf="@+id/et_sign_up_nickName"
-            app:layout_constraintTop_toBottomOf="@id/et_sign_up_nickName" />
+            app:layout_constraintEnd_toEndOf="@+id/et_sign_up_kg"
+            app:layout_constraintStart_toStartOf="@+id/et_sign_up_kg"
+            app:layout_constraintTop_toBottomOf="@id/et_sign_up_kg" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_sign_up_create_user"

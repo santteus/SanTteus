@@ -13,21 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.santteus.R
 import com.example.santteus.databinding.FragmentSignUpBinding
-import com.example.santteus.domain.User
+import com.example.santteus.domain.entity.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
-import java.io.File
-import androidx.annotation.NonNull
 
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import androidx.core.app.ActivityCompat.startActivityForResult
 
 import android.provider.MediaStore
-import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 
@@ -72,6 +65,9 @@ class SignUpFragment : Fragment() {
         binding.btnSignUpCreateUser.setOnClickListener {
             createUser(viewModel.email.value!!,viewModel.password.value!!)
         }
+        binding.imgbtnSignUpBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun createUser(email: String, password: String) {
@@ -83,14 +79,16 @@ class SignUpFragment : Fragment() {
                     val storageReference: StorageReference = fbStorage.reference
                         .child("usersprofileImages").child("uid/$userId")
                     storageReference.putFile(profile!!).addOnCompleteListener {
+
                         if (userId != null) {
                             val user = User(
                                 email,
                                 password,
                                 viewModel.birth.value!!,
                                 viewModel.sex.value!!,
-                                viewModel.nickname.value!!,
-                                it.result.toString()
+                                viewModel.kg.value!!.toInt(),
+                                it.result.toString(),
+                                User.Walk("", "",0,0,0,0)
                             )
                             userRef.child(userId).setValue(user)
                             Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()
@@ -118,6 +116,7 @@ class SignUpFragment : Fragment() {
             profile=data.data!!
             Glide.with(this)
                 .load(profile)
+                .circleCrop()
                 .into(binding.imgUserProfile)
 
         }

@@ -10,7 +10,7 @@ class SignUpViewModel:ViewModel() {
     val password = MutableLiveData<String>()
     val birth = MutableLiveData<String>()
     val sex = MutableLiveData<Boolean>()
-    val nickname = MutableLiveData<String>()
+    val kg = MutableLiveData<String>()
 
     
 }
