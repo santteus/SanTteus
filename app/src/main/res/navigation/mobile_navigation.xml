@@ -39,4 +39,5 @@
         android:name="com.example.santteus.ui.signup.SignUpFragment"
         android:label="SignUpFragment"
         tools:layout="@layout/fragment_sign_up"/>
+
 </navigation>

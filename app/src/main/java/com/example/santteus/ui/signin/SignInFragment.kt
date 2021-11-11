@@ -34,6 +34,13 @@ class SignInFragment : Fragment() {
         return binding.root
     }
 
+    /*override fun onStart() {
+        super.onStart()
+        if(auth?.currentUser != null){
+            findNavController().navigate(R.id.action_signInFragment_to_navigation_home)
+        }
+    }*/
+
     private fun setListeners(){
         binding.btnSignIn.setOnClickListener {
             signIn(viewModel.id.value!!,viewModel.pw.value!!)
@@ -42,6 +49,14 @@ class SignInFragment : Fragment() {
         binding.tvToSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
         }
+        binding.etSignInId.onFocusChangeListener =
+            View.OnFocusChangeListener { view, hasFocus ->
+                viewModel.isFocus.value = hasFocus
+            }
+        binding.etSignInPassword.onFocusChangeListener =
+            View.OnFocusChangeListener { view, hasFocus ->
+                viewModel.isFocus.value = !hasFocus
+            }
     }
     private fun signIn(email: String, password: String) {
 
@@ -53,7 +68,6 @@ class SignInFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     findNavController().navigate(R.id.action_signInFragment_to_navigation_home)
-                    //moveMainPage(auth?.currentUser)
                 } else {
                     Toast.makeText(
                         context, "로그인에 실패 하였습니다.",

@@ -7,7 +7,7 @@
 
     <!-- sign -->
     <string name="sign_in_welcom">Welcome!</string>
-    <string name="sign_in_detail">우리 동네 산책로\n 나에게 맞는 산책로를 찾아보세요!</string>
+    <string name="sign_in_detail">우리 동네 산책로\n나에게 맞는 산책로를 찾아보세요!</string>
     <string name="sign_in_login">로그인</string>
     <string name="sign_in_find">아이디/비밀번호 찾기</string>
     <string name="sign_in_no_count">계정이 없으신가요?</string>
@@ -19,7 +19,7 @@
     <string name="sign_up_password">비밀번호 입력</string>
     <string name="sign_up_password_ok">비밀번호 재입력</string>
     <string name="sign_up_birth">생년월일 8글자</string>
-    <string name="sign_up_nickName">닉네임</string>
+    <string name="sign_up_kg">몸무게 00kg</string>
     <string name="sign_up_create_user">계정 생성</string>
     <string name="sign_up_woman">여성</string>
     <string name="sign_up_man">남성</string>
@@ -34,6 +34,8 @@
     <string name="run_finish_distance">이동 거리</string>
     <string name="run_finish_time">시간</string>
     <string name="run_finish_step">걸음 수</string>
+    <string name="run_start_finish">운동 종료</string>
+    <string name="run_start_stop">일시 정지</string>
     
     <!-- mypage-->
     <string name="my_page_title">마이페이지</string>
@@ -46,5 +48,13 @@
     <string name="my_page_logout">로그아웃</string>
     <string name="my_page_withdrawal">회원탈퇴</string>
 
+    <!-- dialog -->
+    <string name="yes">네</string>
+    <string name="no">아니오</string>
+    <string name="logout">로그아웃</string>
+    <string name="logout_check">정말 로그아웃하시겠습니까?</string>
+    <string name="withdrawal">탈퇴완료</string>
+    <string name="withdrawal_sub">저희 서비스를 이용해주셔서 감사합니다.</string>
+    <string name="ok">확인</string>
 
 </resources>

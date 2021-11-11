@@ -10,6 +10,13 @@ class SignInViewModel :ViewModel() {
     val pw=MutableLiveData<String>()
 
 
+    val isFocus=MutableLiveData<Boolean>()
+
+    init {
+        isFocus.value=false
+    }
+
+
 
 
 }

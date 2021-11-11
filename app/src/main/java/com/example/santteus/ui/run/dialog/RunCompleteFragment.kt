@@ -19,7 +19,6 @@ class RunCompleteFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
 
         _binding = FragmentRunCompleteBinding.inflate(requireActivity().layoutInflater)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -27,29 +26,15 @@ class RunCompleteFragment : DialogFragment() {
         return binding.root
     }
 
-    private fun setListeners(){
-        binding.btnRunClose.setOnClickListener{
+    private fun setListeners() {
+        binding.btnRunClose.setOnClickListener {
+            dismiss()
+        }
+        binding.btnRunComplete.setOnClickListener {
+            // 기록 보러 가기
             dismiss()
         }
 
     }
 
-
-
-    override fun onStart() {
-        super.onStart()
-        setLayout()
-    }
-
-    private fun setLayout() {
-        requireNotNull(dialog).apply {
-            requireNotNull(window).apply {
-                setLayout(
-                    (resources.displayMetrics.widthPixels * 0.8).toInt(),
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-
-            }
-        }
-    }
 }
