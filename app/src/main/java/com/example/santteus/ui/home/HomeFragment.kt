@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.santteus.databinding.FragmentHomeBinding
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
 
@@ -31,6 +32,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+
 
         mView = binding.map
         mView.onCreate(savedInstanceState)
@@ -65,6 +68,36 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     // moveCamera 현위치로 수정 필요
                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
                     googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+
+                    //마커 클릭 리스너-마커 클릭하면 카드뷰 띄움
+                    googleMap!!.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
+                        override fun onMarkerClick(marker: Marker): Boolean {
+                            bottom_sheet.visibility = View.VISIBLE
+                            var parkname = findViewById<TextView>(R.id.park_name)
+                            var parkwhat = findViewById<TextView>(R.id.park_what)
+                            var parkadd1 = findViewById<TextView>(R.id.park_add_lot)
+                            var parkadd2 = findViewById<TextView>(R.id.park_add_road)
+                            var parkphone = findViewById<TextView>(R.id.phone_num)
+                            var parkequip = findViewById<TextView>(R.id.equip)
+                            var arr = marker.tag.toString().split("/") //마커에 붙인 태그
+                            parkname.text = marker.title
+                            parkwhat.text = marker.snippet
+                            parkadd1.text = arr[0]
+                            parkadd2.text = arr[1]
+                            parkphone.text = arr[2]
+                            parkequip.text = arr[3]
+//                Log.d("parkinfo", "parkname->"+marker.title+"___pakrwhat->")
+                            return false
+                        }
+                    })
+
+                    //맵 클릭 리스너-맵 클릭하면 카드뷰 없어짐
+                    googleMap!!.setOnMapClickListener(object : GoogleMap.OnMapClickListener {
+                        override fun onMapClick(latLng: LatLng) {
+                            card_view.visibility = View.GONE
+                        }
+                    })
+
 
                 }
             }
