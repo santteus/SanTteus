@@ -3,36 +3,41 @@ package com.example.santteus.ui.run
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import com.example.santteus.databinding.FragmentRunFinishBinding
-import com.example.santteus.domain.entity.User
 import com.example.santteus.ui.run.dialog.RunCompleteFragment
-import com.google.firebase.database.*
 
 
-class RunFinishFragment : DialogFragment() {
+class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: Int) :
+    DialogFragment() {
 
     lateinit var binding: FragmentRunFinishBinding
+    private val viewModel: RunViewModel by viewModels()
 
+    var userTime = time
+    var userTimeSeconds = timeSeconds
+    var userDistance = distance
+    var userStep = step
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-
+    ): View {
         binding = FragmentRunFinishBinding.inflate(requireActivity().layoutInflater)
+        binding.vm = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         setListeners()
         setRunView()
         return binding.root
     }
 
-    fun setListeners() {
+    private fun setListeners() {
         binding.btnRunSave.setOnClickListener {
             RunCompleteFragment().show(parentFragmentManager, "complete")
             dialog?.dismiss()
@@ -40,44 +45,8 @@ class RunFinishFragment : DialogFragment() {
 
     }
 
-    fun setRunView() {
-        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-        val myRef: DatabaseReference = database.getReference("walk")
-        myRef.addValueEventListener(object : ValueEventListener {
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                //myRef.child("")
-                var sum = 0
-                for (userSnapshot in dataSnapshot.children) {
-                    /*if (userSnapshot.key.equals("email")) {
-                        longToast(snapshot.value)
-                    }*/
-                    /*     userSnapshot.child("MESURE_AGRDE_FLAG_NM").value
-
-
-                     val getData :Walk? = userSnapshot.getValue(Walk::class.java)
-                     if (getData != null) {
-                         listData.add(getData)
-                     }*/
-                    //val post: Post? = dataSnapshot.getValue(Post::class.java)
-                    if (userSnapshot.child("MESURE_AGRDE_FLAG_NM").value == "10대") {
-                        sum += (userSnapshot.child("AVRG_PACE_CO").value as Long).toInt()
-
-                    }
-                    Log.d(
-                        "asdf",
-                        sum.toString()
-                    )
-                }
-
-            }
-
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-        })
-
+    private fun setRunView() {
+        viewModel.requestUserWalk(userTime, userTimeSeconds, userDistance, userStep)
     }
 
 
