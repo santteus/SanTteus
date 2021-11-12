@@ -2,141 +2,314 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
+        <variable
+            name="vm"
+            type="com.example.santteus.ui.run.RunViewModel" />
 
 
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_sign_12"
-    tools:context=".ui.run.RunFinishFragment">
-
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/dialog_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
-        android:text="@string/run_finish_title"
-        app:layout_constraintStart_toStartOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+        android:background="@drawable/bg_sign_12"
+        tools:context=".ui.run.RunFinishFragment">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="288dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/bg_run_8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    <TextView
-        android:id="@+id/tv_distance_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/run_finish_distance"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/dialog_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_distance_title"
-        app:layout_constraintStart_toStartOf="@+id/tv_distance_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_distance_title" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="37dp"
+            android:fontFamily="@font/roboto_regular"
+            android:includeFontPadding="false"
+            android:text="@string/run_finish_title"
+            android:textColor="@color/santteus_222222"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/imageButton"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
-    <TextView
-        android:id="@+id/tv_time_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="70dp"
-        android:text="@string/run_finish_time"
-        app:layout_constraintEnd_toStartOf="@+id/tv_distance_title"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="288dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/bg_run_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_time_title"
-        app:layout_constraintStart_toStartOf="@+id/tv_time_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_time_title" />
+        <TextView
+            android:id="@+id/tv_distance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/run_finish_distance"
+            android:fontFamily="@font/roboto_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/santtues_767676"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-    <TextView
-        android:id="@+id/tv_step_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/run_finish_step"
-        app:layout_constraintStart_toEndOf="@+id/tv_distance_title"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        <LinearLayout
+            android:id="@+id/tv_distance_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_distance_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_distance_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_distance_title">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_step_title"
-        app:layout_constraintStart_toStartOf="@+id/tv_step_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_step_title" />
 
-    <TextView
-        android:id="@+id/tv_cal_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/run_finish_step"
-        app:layout_constraintEnd_toEndOf="@+id/tv_distance_title"
-        app:layout_constraintStart_toStartOf="@+id/tv_distance_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_distance" />
+            <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vm.userWalk.distance}"
+                android:fontFamily="@font/roboto_regular"
+                android:includeFontPadding="false"
+                android:textColor="@color/santteus_222222"
+                android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/tv_cal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_cal_title"
-        app:layout_constraintStart_toStartOf="@+id/tv_cal_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cal_title" />
+            <TextView
+                android:id="@+id/tv_distance_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:includeFontPadding="false"
+                android:textColor="@color/santtues_767676"
+                android:textSize="8sp"
+                android:text="km" />
+        </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_run_save"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/bg_run_100"
-        android:text="@string/run_finish_save"
-        android:textColor="@color/white"
-        android:fontFamily="@font/roboto_regular"
-        android:textStyle="bold"
-        android:includeFontPadding="false"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_cal" />
+        <TextView
+            android:id="@+id/tv_time_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="70dp"
+            android:fontFamily="@font/roboto_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/santtues_767676"
+            android:textSize="8sp"
+            android:text="@string/run_finish_time"
+            app:layout_constraintEnd_toStartOf="@+id/tv_distance_title"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/santteus_222222"
+            android:textSize="16sp"
+            android:text="@{vm.userWalk.time}"
+            app:layout_constraintEnd_toEndOf="@+id/tv_time_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_time_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time_title" />
+
+        <TextView
+            android:id="@+id/tv_step_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/run_finish_step"
+            android:fontFamily="@font/roboto_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/santtues_767676"
+            android:textSize="8sp"
+            app:layout_constraintStart_toEndOf="@+id/tv_distance_title"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_step_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_step_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_step_title">
+
+
+            <TextView
+                android:id="@+id/tv_step"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:includeFontPadding="false"
+                android:text="@{String.valueOf(vm.userWalk.step)}"
+                android:textColor="@color/santteus_222222"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_step_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:includeFontPadding="false"
+                android:textColor="@color/santtues_767676"
+                android:textSize="8sp"
+                android:text="걸음" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_cal_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/run_finish_cal"
+            android:fontFamily="@font/roboto_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/santtues_767676"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_time_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_time_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_distance_layout" />
+
+
+        <TextView
+            android:id="@+id/tv_cal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/santteus_222222"
+            android:textSize="16sp"
+            android:text="@{String.valueOf(vm.userWalk.cal)}"
+            app:layout_constraintEnd_toEndOf="@+id/tv_cal_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_cal_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cal_title" />
+
+        <TextView
+            android:id="@+id/tv_top_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/run_finish_top"
+            android:fontFamily="@font/roboto_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/santtues_767676"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_distance_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_distance_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_distance_layout" />
+
+        <LinearLayout
+            android:id="@+id/tv_top_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_top_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_top_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_top_title">
+
+
+            <TextView
+                android:id="@+id/tv_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:includeFontPadding="false"
+                android:textColor="@color/santteus_222222"
+                android:text="@{String.valueOf(vm.userWalk.top)}"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_top_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:includeFontPadding="false"
+                android:textColor="@color/santtues_767676"
+                android:textSize="8sp"
+                android:text="%" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_age_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/run_finish_age"
+            android:fontFamily="@font/roboto_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/santtues_767676"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_step_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_step_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_top_title" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_age_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_age_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_age_title">
+
+
+            <TextView
+                android:id="@+id/tv_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:includeFontPadding="false"
+                android:text="@{String.valueOf(vm.userWalk.age)}"
+                android:textColor="@color/santteus_222222"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_age_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:includeFontPadding="false"
+                android:textColor="@color/santtues_767676"
+                android:textSize="8sp"
+                android:text="대" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_run_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/bg_run_100"
+            android:fontFamily="@font/roboto_regular"
+            android:includeFontPadding="false"
+            android:text="@string/run_finish_save"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_top_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

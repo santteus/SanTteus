@@ -40,6 +40,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
     private var mSteps = 0
     private var mStepsCount = 0
 
+    private var userTime=""
+    private var userTimeSeconds=0
+    private var userDistance=""
+    private var userStep=0
+
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var sensorManager :SensorManager
 
@@ -62,9 +67,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
 
     private fun setSensorCount() {
         sensorManager = (context?.getSystemService(Context.SENSOR_SERVICE) as SensorManager?)!!
-        val sensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        val sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         sensor?.let {
-            sensorManager?.registerListener(
+            sensorManager.registerListener(
                 this@HomeFragment,
                 it,
                 SensorManager.SENSOR_DELAY_FASTEST
@@ -81,8 +86,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
             mStepsCount = 0
         }
         binding.mypageBottom.btnStartFinish.setOnClickListener {
+            RunFinishFragment(userTime,userTimeSeconds,userDistance,userStep).show(parentFragmentManager, "run")
             reset()
-            RunFinishFragment().show(parentFragmentManager, "run")
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
         binding.mypageBottom.btnStartStop.setOnClickListener {
@@ -101,7 +106,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
             val s = time % 60
 
             activity?.runOnUiThread {
-
+                userTimeSeconds=s
+                userTime="%1$02d:%2$02d:%3$02d".format(h, m, s)
                 binding.mypageBottom.tvRunTime.text = "%1$02d:%2$02d:%3$02d".format(h, m, s)
 
             }
@@ -196,7 +202,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
     override fun onStop() {
         super.onStop()
         mView.onStop()
-        sensorManager?.unregisterListener(this)
+        sensorManager.unregisterListener(this)
     }
 
     override fun onResume() {
@@ -225,12 +231,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
         sensorEvent ?: return
         sensorEvent.values.firstOrNull()?.let {
             Log.d("aaaa", "Step count: $it ")
-
             if (mStepsCount < 1) {
-                // initial value
                 mStepsCount = it.toInt()
             }
             mSteps = it.toInt() - mStepsCount
+            userStep=mSteps
             binding.mypageBottom.tvRunStepCount.text = mSteps.toString()
         }
     }
