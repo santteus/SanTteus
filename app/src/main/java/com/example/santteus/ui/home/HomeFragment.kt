@@ -20,6 +20,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.santteus.MainActivity
 import com.example.santteus.databinding.FragmentHomeBinding
 import com.example.santteus.ui.run.RunFinishFragment
@@ -34,11 +35,14 @@ import com.google.firebase.database.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.example.santteus.R;
+import com.example.santteus.ui.run.RunViewModel
 
 class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, GoogleMap.OnMarkerClickListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding ?: error("Binding이 초기화되지 않았습니다.")
+
+    private val viewModel:RunViewModel by activityViewModels()
 
     private lateinit var mView: MapView
     private val PERMISSIONS_REQUEST_CODE = 999
@@ -71,7 +75,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        binding.vm=viewModel
+        binding.lifecycleOwner=viewLifecycleOwner
         mainActivity = context as MainActivity
         mView = binding.map
         mView.onCreate(savedInstanceState)
@@ -112,7 +117,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
             mStepsCount = 0
         }
         binding.mypageBottom.btnStartFinish.setOnClickListener {
-            RunFinishFragment(userTime,userTimeSeconds,userDistance,userStep).show(parentFragmentManager, "run")
+            RunFinishFragment(userTime,userTimeSeconds,userDistance,userStep,roadName).show(parentFragmentManager, "run")
             reset()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
