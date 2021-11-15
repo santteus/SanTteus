@@ -37,16 +37,23 @@ class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: 
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.requestUserWalk(userTime, userTimeSeconds, userDistance, userStep)
+    }
+
     private fun setListeners() {
         binding.btnRunSave.setOnClickListener {
             RunCompleteFragment().show(parentFragmentManager, "complete")
+            viewModel.requestSetUserWalk(viewModel.userWalk.value!!)
             dialog?.dismiss()
         }
 
     }
 
     private fun setRunView() {
-        viewModel.requestUserWalk(userTime, userTimeSeconds, userDistance, userStep)
+
+        //viewModel.requestSetView()
     }
 
 

@@ -1,6 +1,9 @@
 package com.example.santteus.data
 
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.santteus.domain.entity.User
+import com.example.santteus.domain.entity.Walk
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
@@ -8,44 +11,106 @@ object FirebaseService {
 
     private var auth : FirebaseAuth? = null
     private var database : FirebaseDatabase
+    //var age = 0
+    //var top = 0
+    //var cal = 0
     var age = 0
     var top = 0
     var cal = 0
-
     init {
         auth = FirebaseAuth.getInstance()
         database= FirebaseDatabase.getInstance()
 
     }
 
-     fun getUserWalk(time:String,timeSeconds:Int,distance:String,step:Int): User.Walk {
-         try{
-             database.reference.child("users").child(auth?.currentUser?.uid!!)
-                 .addValueEventListener(object : ValueEventListener {
-                     override fun onDataChange(snapshot: DataSnapshot) {
-                         val sex = snapshot.child("sex").value.toString()
-                         val kg = snapshot.child("kg").value.toString().toInt()
-                         cal=(timeSeconds/1000)*kg
+    fun setUserWalk(walk:Walk){
+        val userRef = database.getReference("users")
+        userRef.child(auth?.currentUser?.uid!!).child("data").setValue(walk)
+    }
 
-                         if(sex == "true") {
-                             getWalkAvg("f")
-                         }else{
-                             getWalkAvg("m")
-                         }
-                     }
+    fun getUserWalk(time:String,timeSeconds:Int,distance:String,step:Int):Walk{
+        //var userAge=0
+        var sexFirst=""
+        var response =MutableLiveData<Walk>()
+            database.reference.child("users").child(auth?.currentUser?.uid!!)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
 
-                     override fun onCancelled(error: DatabaseError) {
-                     }
+                        val sex = snapshot.child("sex").value.toString()
+                        val kg = snapshot.child("kg").value.toString().toInt()
+                        cal=(timeSeconds/1000)*kg
 
-                 })
+                        if(sex == "true") {
+                            getWalkAvg("f")
+                        }else{
+                            getWalkAvg("m")
+
+                        }
 
 
-        }catch (e: Exception){
+                        val userRef = database.getReference("users")
+                        userRef.child(auth?.currentUser?.uid!!).child("data").setValue(Walk(time,distance,age,step,cal,top))
 
-        }
+                        response.postValue(Walk(time,distance,age,step,cal,top))
+                    }
 
-        return User.Walk(time,distance,age,step,cal,top)
+                    override fun onCancelled(error: DatabaseError) {
+                    }
 
+                })
+
+        return response.value!!
+    }
+
+    fun getUserWalkFirst(time:String,timeSeconds:Int,distance:String,step:Int){
+        //var userAge=0
+        var sexFirst=""
+        database.reference.child("users").child(auth?.currentUser?.uid!!)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val sex = snapshot.child("sex").value.toString()
+                    val kg = snapshot.child("kg").value.toString().toInt()
+                    cal=(timeSeconds/1000)*kg
+
+                    if(sex == "true") {
+                        getWalkAvg("f")
+                    }else{
+                        getWalkAvg("m")
+
+                    }
+
+
+                    val userRef = database.getReference("users")
+                    userRef.child(auth?.currentUser?.uid!!).child("data").setValue(Walk(time,distance,age,step,cal,top))
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
+
+
+    }
+
+
+    fun setView():Walk{
+        var response =MutableLiveData<Walk>()
+            database.reference.child("users")
+            .child(auth?.currentUser?.uid!!)
+            .child("data").addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    response.postValue(snapshot.getValue(Walk::class.java))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+        return response.value!!
     }
 
     fun getWalkAvg(sex:String){

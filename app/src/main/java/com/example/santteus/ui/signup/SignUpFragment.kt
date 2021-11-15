@@ -23,6 +23,7 @@ import com.google.firebase.storage.StorageReference
 import android.provider.MediaStore
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.santteus.domain.entity.Walk
 
 
 class SignUpFragment : Fragment() {
@@ -88,7 +89,7 @@ class SignUpFragment : Fragment() {
                                 viewModel.sex.value!!,
                                 viewModel.kg.value!!.toInt(),
                                 it.result.toString(),
-                                User.Walk("", "",0,0,0,0)
+                                Walk("", "",0,0,0,0)
                             )
                             userRef.child(userId).setValue(user)
                             Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()
