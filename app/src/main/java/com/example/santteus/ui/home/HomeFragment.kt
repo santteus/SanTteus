@@ -1,19 +1,24 @@
 package com.example.santteus.ui.home
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 
-import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
+import com.example.santteus.MainActivity
 import com.example.santteus.databinding.FragmentHomeBinding
 import com.example.santteus.ui.run.RunFinishFragment
 import com.google.android.gms.maps.*
@@ -21,10 +26,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import java.text.SimpleDateFormat
 import java.util.*
 import com.google.firebase.database.*
-
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.example.santteus.R;
 
 class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
 
@@ -32,6 +38,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
     private val binding get() = _binding ?: error("Binding이 초기화되지 않았습니다.")
 
     private lateinit var mView: MapView
+    private val PERMISSIONS_REQUEST_CODE = 999
+    lateinit var mainActivity : MainActivity
 
     private var time = 0
     private var isRunning = false
@@ -55,9 +63,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        mainActivity = context as MainActivity
         mView = binding.map
         mView.onCreate(savedInstanceState)
         mView.getMapAsync(this)
+
         setListeners()
         setBottomSheet()
         setSensorCount()
@@ -93,6 +104,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
         binding.mypageBottom.btnStartStop.setOnClickListener {
             isRunning = !isRunning
             if (isRunning) pause() else start()
+        }
+
+        // 검색 버튼 클릭 시
+        binding.ivHomeSearch.setOnClickListener {
+
         }
     }
 
@@ -146,10 +162,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
 
     override fun onMapReady(googleMap: GoogleMap) {
         val marker = LatLng(37.568291, 126.997780)
-        googleMap.addMarker(MarkerOptions().position(marker).title("여기"))
+        googleMap.addMarker(MarkerOptions().position(marker).title("기본 위치"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
-
 
         val database : FirebaseDatabase = FirebaseDatabase.getInstance()
         val myRef : DatabaseReference = database.getReference("road")
@@ -166,27 +181,42 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
                     longitude = snapshot.child("COURS_SPOT_LO").value as Double
                     name = snapshot.child("WLK_COURS_NM").value as String
 
+
+                    // custom marker
+                    val bitmapdraw = context!!.resources.getDrawable(R.drawable.pin_normal,context!!.theme) as BitmapDrawable
+                    val b = bitmapdraw.bitmap
+                    val smallMarker = Bitmap.createScaledBitmap(b, 95, 140, false)
+
                     val marker = LatLng(latitude,longitude)
-                    googleMap.addMarker(MarkerOptions().position(marker).title(name))
+
+                    googleMap.addMarker(MarkerOptions().position(marker).title(name).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)))
 
                     // moveCamera 현위치로 수정 필요
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
-                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+                    //googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
+                    //googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
 
+                    if (checkSelfPermission(
+                            mainActivity,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                            mainActivity,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), // 1
+                            PERMISSIONS_REQUEST_CODE) // 2
+                        return
+                    }
+
+                    googleMap.isMyLocationEnabled = true
+                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                //Log.e("MainActivity", String.valueOf(databaseError.toException())); // 에러문 출력
+                //Log.e("MainActivity", String.valueOf(databaseError.tException())); // 에러문 출력
             }
         })
-
-
-        //val marker = LatLng(37.568291,126.997780)
-        //googleMap.addMarker(MarkerOptions().position(marker).title("여기"))
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
-        //googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
-
     }
 
     override fun onDestroyView() {
