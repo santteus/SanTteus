@@ -15,7 +15,7 @@ data class User(
         val distance:String,
         val age:Int,
         val step:Int,
-        val kal:Int,
+        val cal:Int,
         val top:Int,
     )
 }

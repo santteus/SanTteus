@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -21,6 +20,7 @@
             android:background="@drawable/detailbackground"
             app:behavior_fitToContents="false"
             app:behavior_hideable="true"
+            app:behavior_peekHeight="130dp"
             android:maxHeight="430dp"
             app:layout_behavior="@string/bottom_sheet_behavior">
 
@@ -31,14 +31,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="268dp"
                 android:fontFamily="@font/roboto_regular"
                 android:includeFontPadding="false"
                 android:text="보라매공원 산책길"
                 android:textColor="@color/santteus_222222"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,15 +44,15 @@
                 android:id="@+id/road_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="19dp"
-                android:layout_marginEnd="223dp"
+                android:background="@drawable/level_rec"
                 android:fontFamily="@font/roboto_regular"
                 android:includeFontPadding="false"
                 android:text="매우 쉬움"
+                android:gravity="center"
                 android:textColor="@color/santteus_222222"
                 android:textSize="10sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/road_name"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,8 +63,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="21dp"
                 android:layout_marginTop="13dp"
-                android:layout_marginEnd="374dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/road_name"
                 app:srcCompat="@drawable/clock" />
@@ -77,12 +73,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="14dp"
-                android:layout_marginEnd="304dp"
                 android:fontFamily="@font/roboto_regular"
                 android:includeFontPadding="false"
                 android:text="1.63km | 30분"
+                android:textColor="#222222"
                 android:textSize="10sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/timeImage"
                 app:layout_constraintTop_toBottomOf="@+id/road_name" />
 
@@ -91,9 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="9dp"
-                android:layout_marginEnd="374dp"
                 android:scaleType="fitXY"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/timeImage"
                 app:layout_constraintTop_toBottomOf="@+id/timeImage"
                 app:srcCompat="@drawable/inform_circle" />
@@ -104,26 +97,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="11dp"
-                android:layout_marginEnd="302dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="화장실 | 편의점"
+                android:textColor="#222222"
                 android:textSize="10sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imform_image"
                 app:layout_constraintTop_toBottomOf="@+id/distance_time" />
 
 
             <TextView
                 android:id="@+id/route"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="9dp"
+                android:layout_marginEnd="24dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="보라매공원 호수 - 인공암벽등반장 - 보라매공원 후문"
+                android:textColor="#222222"
                 android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imform_image" />
+                app:layout_constraintTop_toBottomOf="@+id/toilet_conve" />
 
 
             <View
@@ -140,15 +135,19 @@
                 android:id="@+id/explain"
                 android:layout_width="320dp"
                 android:layout_height="92dp"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="12dp"
+                android:padding="8dp"
+                android:scrollbars="vertical"
+                android:background="@drawable/explain_rec"
                 android:fontFamily="@font/roboto_regular"
                 android:text="보라매공원은 서울특별시 동작구 신대방동 395번지 대방로 219 일대인
 옛날 공군사관학교 자리를 1985년 12월 20일에 보수하여 1986년 5월 5일
 개원하였다.
 공군사관학교 때의 상징인 '보라매'를 그대로 이름에 사용하여
 오늘에 이르고 있으며, 공원을 산책하는 코스이다."
+                android:textColor="#222222"
                 android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line" />
 
@@ -167,8 +166,10 @@
                 android:id="@+id/personImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_marginStart="60dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="220dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line2"
                 app:srcCompat="@drawable/running_person" />
@@ -177,168 +178,38 @@
                 android:id="@+id/explain2"
                 android:layout_width="130dp"
                 android:layout_height="44dp"
-                android:layout_marginTop="42dp"
                 android:layout_marginLeft="30dp"
+                android:layout_marginTop="42dp"
                 android:fontFamily="@font/roboto_regular"
-                android:text="자유롭게 운동하다
-운동 종료 버튼을 눌러주세요.
-현재 운동 상태를 알려드립니다."
+                android:gravity="center"
+                android:text="자유롭게 운동하다 \n운동 종료 버튼을 눌러주세요.
+\n현재 운동 상태를 알려드립니다."
+                android:textColor="#222222"
                 android:textSize="10sp"
                 app:layout_constraintStart_toEndOf="@+id/personImage"
                 app:layout_constraintTop_toBottomOf="@+id/line2" />
 
-
-
-            <!--                <LinearLayout-->
-<!--                    android:id="@+id/linearLayout"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent">-->
-
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/road_name"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginLeft="20dp"-->
-<!--                        android:layout_marginTop="20dp"-->
-<!--                        android:fontFamily="@font/roboto_regular"-->
-<!--                        android:includeFontPadding="false"-->
-<!--                        android:text="보라매공원 산책길"-->
-<!--                        android:textColor="@color/santteus_222222"-->
-<!--                        android:textSize="16sp"-->
-<!--                        android:textStyle="bold"-->
-<!--                        app:layout_constraintEnd_toEndOf="@+id/tv_run_distance"-->
-<!--                        app:layout_constraintStart_toStartOf="@+id/tv_run_distance"-->
-<!--                        app:layout_constraintTop_toBottomOf="@+id/tv_run_distance" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/road_level"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="8dp"-->
-<!--                        android:layout_marginTop="20dp"-->
-<!--                        android:fontFamily="@font/roboto_regular"-->
-<!--                        android:includeFontPadding="false"-->
-<!--                        android:text="매우 쉬움"-->
-<!--                        android:textColor="@color/santteus_222222"-->
-<!--                        android:textSize="10sp"-->
-<!--                        app:layout_constraintTop_toBottomOf="@+id/tv_run_distance" />-->
-
-<!--                    <View-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="0dp"-->
-<!--                        android:layout_weight="1" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:id="@+id/linearLayout2"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">-->
-
-<!--                    <ImageView-->
-<!--                        android:id="@+id/timeImage"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="21dp"-->
-<!--                        android:layout_marginTop="13dp"-->
-<!--                        android:scaleType="fitXY"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        app:srcCompat="@drawable/clock" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/distance_time"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="9dp"-->
-<!--                        android:layout_marginTop="14dp"-->
-<!--                        android:fontFamily="@font/roboto_regular"-->
-<!--                        android:includeFontPadding="false"-->
-<!--                        android:text="1.63km | 30분"-->
-<!--                        android:textSize="10sp" />-->
-
-<!--                    <View-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="0dp"-->
-<!--                        android:layout_weight="1" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:id="@+id/linearLayout3"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/linearLayout2"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2">-->
-
-<!--                    <ImageView-->
-<!--                        android:id="@+id/imform_image"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginLeft="21dp"-->
-<!--                        android:layout_marginTop="9dp"-->
-<!--                        android:scaleType="fitXY"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        app:srcCompat="@drawable/inform_circle" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/toilet_conve"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginLeft="9dp"-->
-<!--                        android:layout_marginTop="9dp"-->
-<!--                        android:fontFamily="@font/roboto_regular"-->
-<!--                        android:text="화장실 | 편의점"-->
-<!--                        android:textSize="10sp" />-->
-
-<!--                    <View-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="0dp"-->
-<!--                        android:layout_weight="1" />-->
-
-<!--                </LinearLayout>-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/route"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginLeft="21dp"-->
-<!--                    android:layout_marginTop="9dp"-->
-<!--                    android:fontFamily="@font/roboto_regular"-->
-<!--                    android:text="보라매공원 호수 - 인공암벽등반장 - 보라매공원 후문"-->
-<!--                    android:textSize="10sp"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/linearLayout3"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />-->
-
-
-<!--                <View-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:background="#E5E5E5"-->
-<!--                    android:layout_marginTop="20dp"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/route"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/route" />-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRunStart"
+                android:layout_width="320dp"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_run_100"
+                android:text="운동 시작"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/personImage" />
 
 
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

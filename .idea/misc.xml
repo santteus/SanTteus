@@ -4,15 +4,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/activity_add_data.xml" value="0.25364583333333335" />
+        <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/bottom_detail.xml" value="0.2" />
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/fragment_home.xml" value="0.15572916666666667" />
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/fragment_my_page.xml" value="0.15572916666666667" />
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/fragment_record.xml" value="0.1" />
+        <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/fragment_run_complete.xml" value="0.25364583333333335" />
+        <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/fragment_run_finish.xml" value="0.25364583333333335" />
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/fragment_run_start.xml" value="0.25364583333333335" />
+        <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/fragment_sign_in.xml" value="0.25364583333333335" />
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/fragment_sign_up.xml" value="0.23802083333333332" />
+        <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/item.xml" value="0.4" />
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/item_dialog.xml" value="0.1" />
+        <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/item_dialog_complete.xml" value="0.25364583333333335" />
         <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/layout_bottomdetail.xml" value="0.1" />
-        <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/layout_detail.xml" value="0.264" />
+        <entry key="..\:/Santtues/SanTteus/app/src/main/res/layout/layout_detail.xml" value="0.2" />
         <entry key="app/src/main/res/drawable-v24/bg_run_8_selected.xml" value="0.3609375" />
         <entry key="app/src/main/res/drawable-v24/line_sign_unselected.xml" value="0.3609375" />
         <entry key="app/src/main/res/drawable/bg_rectangle_sign.xml" value="0.2234375" />
