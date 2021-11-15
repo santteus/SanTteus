@@ -24,6 +24,7 @@ import android.provider.MediaStore
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.santteus.domain.entity.Walk
+import java.time.LocalDate
 
 
 class SignUpFragment : Fragment() {
@@ -31,7 +32,6 @@ class SignUpFragment : Fragment() {
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private lateinit var binding : FragmentSignUpBinding
     private val REQUST_CODE_GALLERY=10
-
     private val database by lazy { FirebaseDatabase.getInstance() }
     private val userRef = database.getReference("users")
     private val fbStorage by lazy { FirebaseStorage.getInstance() }
@@ -89,7 +89,7 @@ class SignUpFragment : Fragment() {
                                 viewModel.sex.value!!,
                                 viewModel.kg.value!!.toInt(),
                                 it.result.toString(),
-                                listOf(Walk("","", "",0,0,0,0))
+                                listOf(Walk("","", 0,0,0,0,""))
                             )
                             userRef.child(userId).setValue(user)
                             Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()

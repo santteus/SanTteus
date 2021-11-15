@@ -17,8 +17,8 @@ class RunViewModel : ViewModel() {
     private val _userWalk = MutableLiveData<Walk>()
     val userWalk: LiveData<Walk> = _userWalk
 
-    fun requestUserWalk(fragment:Fragment,time: String, timeSeconds: Int, distance: String, step: Int) {
-        repo.getUserWalk(time, timeSeconds, distance, step)
+    fun requestUserWalk(fragment:Fragment,time: String, timeSeconds: Int, distance: String, step: Int,name:String) {
+        repo.getUserWalk(time, timeSeconds, distance, step,name)
         repo.userWalk.observe(fragment, Observer {
             _userWalk.postValue(it)
         })

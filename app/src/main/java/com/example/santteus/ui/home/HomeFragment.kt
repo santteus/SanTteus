@@ -117,7 +117,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
             mStepsCount = 0
         }
         binding.mypageBottom.btnStartFinish.setOnClickListener {
-            RunFinishFragment(userTime,userTimeSeconds,userDistance,userStep).show(parentFragmentManager, "run")
+            RunFinishFragment(userTime,userTimeSeconds,userDistance,userStep,roadName).show(parentFragmentManager, "run")
             reset()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }

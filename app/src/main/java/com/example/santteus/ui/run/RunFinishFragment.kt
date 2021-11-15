@@ -13,7 +13,7 @@ import com.example.santteus.databinding.FragmentRunFinishBinding
 import com.example.santteus.ui.run.dialog.RunCompleteFragment
 
 
-class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: Int) :
+class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: Int,name:String) :
     DialogFragment() {
 
     lateinit var binding: FragmentRunFinishBinding
@@ -23,6 +23,7 @@ class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: 
     var userTimeSeconds = timeSeconds
     var userDistance = distance
     var userStep = step
+    var roadName = name
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +54,7 @@ class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: 
     }
 
     private fun setRunView() {
-        viewModel.requestUserWalk(this,userTime, userTimeSeconds, userDistance, userStep)
+        viewModel.requestUserWalk(this,userTime, userTimeSeconds, userDistance, userStep,roadName)
     }
 
 
