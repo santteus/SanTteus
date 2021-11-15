@@ -89,7 +89,7 @@ class SignUpFragment : Fragment() {
                                 viewModel.sex.value!!,
                                 viewModel.kg.value!!.toInt(),
                                 it.result.toString(),
-                                Walk("", "",0,0,0,0)
+                                listOf(Walk("","", "",0,0,0,0))
                             )
                             userRef.child(userId).setValue(user)
                             Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()

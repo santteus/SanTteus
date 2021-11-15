@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.santteus.databinding.FragmentRunFinishBinding
 import com.example.santteus.ui.run.dialog.RunCompleteFragment
@@ -16,7 +17,7 @@ class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: 
     DialogFragment() {
 
     lateinit var binding: FragmentRunFinishBinding
-    private val viewModel: RunViewModel by viewModels()
+    private val viewModel: RunViewModel by activityViewModels()
 
     var userTime = time
     var userTimeSeconds = timeSeconds
@@ -39,7 +40,7 @@ class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: 
 
     override fun onResume() {
         super.onResume()
-        viewModel.requestUserWalk(userTime, userTimeSeconds, userDistance, userStep)
+        //
     }
 
     private fun setListeners() {
@@ -52,8 +53,7 @@ class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: 
     }
 
     private fun setRunView() {
-
-        //viewModel.requestSetView()
+        viewModel.requestUserWalk(this,userTime, userTimeSeconds, userDistance, userStep)
     }
 
 

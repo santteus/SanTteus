@@ -7,5 +7,5 @@ data class User(
     val sex:Boolean,
     val kg:Int,
     val profile:String,
-    val data:Walk,
+    val data:List<Walk>,
 )
