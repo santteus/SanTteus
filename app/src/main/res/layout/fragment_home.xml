@@ -15,9 +15,57 @@
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/map"
+            android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="com.google.android.gms.maps.MapFragment" />
+            app:layout_constraintBottom_toBottomOf="@+id/btn_home_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_home_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="60dp"
+            android:background="@drawable/bg_sign_12"
+            android:ems="10"
+            android:fontFamily="@font/roboto_medium"
+            android:hint="@string/home_location"
+            android:inputType="textPersonName"
+            android:paddingLeft="45dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/map" />
+
+        <ImageView
+            android:id="@+id/iv_home_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:padding="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_home_search"
+            app:layout_constraintStart_toStartOf="@+id/et_home_search"
+            app:layout_constraintTop_toTopOf="@+id/et_home_search"
+            app:srcCompat="@drawable/ic_search" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_home_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:paddingLeft="15dp"
+            android:background="@drawable/bg_white_100"
+            android:text="@string/home_list"
+            android:drawableStart="@drawable/ic_list"
+            android:drawablePadding="-20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btn_run"
@@ -34,6 +82,45 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_home_diet"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/selector_category_btn"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="-30dp"
+            android:text="@string/home_diet"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/et_home_search"
+            app:layout_constraintTop_toBottomOf="@+id/et_home_search" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_home_strength"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/selector_category_btn"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/home_strength"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_home_diet"
+            app:layout_constraintStart_toEndOf="@+id/btn_home_diet"
+            app:layout_constraintTop_toTopOf="@+id/btn_home_diet" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_home_mood"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/selector_category_btn"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/home_mood"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_home_strength"
+            app:layout_constraintStart_toEndOf="@+id/btn_home_strength"
+            app:layout_constraintTop_toTopOf="@+id/btn_home_strength" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

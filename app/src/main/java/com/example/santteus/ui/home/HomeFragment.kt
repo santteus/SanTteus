@@ -46,7 +46,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
     private lateinit var mView: MapView
     private val PERMISSIONS_REQUEST_CODE = 999
     lateinit var mainActivity : MainActivity
-    val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
 
     private var time = 0
     private var isRunning = false
@@ -163,7 +162,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-
         val marker = LatLng(37.568291, 126.997780)
         googleMap.addMarker(MarkerOptions().position(marker).title("기본 위치"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
