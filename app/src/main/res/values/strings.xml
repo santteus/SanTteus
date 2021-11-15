@@ -4,6 +4,12 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+    <!-- home -->
+    <string name="home_location">서울 동작구</string>
+    <string name="home_list">목록</string>
+    <string name="home_diet">다이어트</string>
+    <string name="home_strength">체력증진</string>
+    <string name="home_mood">기분전환</string>
 
     <!-- sign -->
     <string name="sign_in_welcom">Welcome!</string>
@@ -34,6 +40,9 @@
     <string name="run_finish_distance">이동 거리</string>
     <string name="run_finish_time">시간</string>
     <string name="run_finish_step">걸음 수</string>
+    <string name="run_finish_cal">칼로리</string>
+    <string name="run_finish_age">신체나이</string>
+    <string name="run_finish_top">상위</string>
     <string name="run_start_finish">운동 종료</string>
     <string name="run_start_stop">일시 정지</string>
     
