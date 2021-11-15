@@ -2,28 +2,21 @@ package com.example.santteus.ui.home
 
 import android.Manifest
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.location.Location
-import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
 
-import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.example.santteus.MainActivity
 import com.example.santteus.databinding.FragmentHomeBinding
@@ -33,10 +26,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import java.text.SimpleDateFormat
 import java.util.*
 import com.google.firebase.database.*
-
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.example.santteus.R;
 
 class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
 
@@ -111,6 +105,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
             isRunning = !isRunning
             if (isRunning) pause() else start()
         }
+
+        // 검색 버튼 클릭 시
+        binding.ivHomeSearch.setOnClickListener {
+
+        }
     }
 
     private fun start() {
@@ -182,8 +181,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
                     longitude = snapshot.child("COURS_SPOT_LO").value as Double
                     name = snapshot.child("WLK_COURS_NM").value as String
 
+
+                    // custom marker
+                    val bitmapdraw = context!!.resources.getDrawable(R.drawable.pin_normal,context!!.theme) as BitmapDrawable
+                    val b = bitmapdraw.bitmap
+                    val smallMarker = Bitmap.createScaledBitmap(b, 95, 140, false)
+
                     val marker = LatLng(latitude,longitude)
-                    googleMap.addMarker(MarkerOptions().position(marker).title(name))
+
+                    googleMap.addMarker(MarkerOptions().position(marker).title(name).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)))
 
                     // moveCamera 현위치로 수정 필요
                     //googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))

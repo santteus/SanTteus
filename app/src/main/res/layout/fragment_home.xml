@@ -122,5 +122,15 @@
             app:layout_constraintStart_toEndOf="@+id/btn_home_strength"
             app:layout_constraintTop_toTopOf="@+id/btn_home_strength" />
 
+        <ImageView
+            android:id="@+id/iv_mark_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_marker_normal"
+            tools:layout_editor_absoluteY="137dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
