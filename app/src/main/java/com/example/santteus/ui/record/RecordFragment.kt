@@ -18,6 +18,8 @@ class RecordFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    lateinit var recyclerItemAdapter: RecyclerItemAdapter
+    val datas = mutableListOf<BadgeData>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,15 +32,37 @@ class RecordFragment : Fragment() {
         _binding = FragmentRecordBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+
+
+        initRecycler()
+
+
         return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+
+    private fun initRecycler() {
+        recyclerItemAdapter = RecyclerItemAdapter(requireContext())
+        binding.recyclerview.adapter = recyclerItemAdapter
+
+        datas.apply {
+            add(BadgeData("보라매공원"))
+            add(BadgeData("모시마루"))
+            add(BadgeData("거북이마을"))
+            add(BadgeData("천년의숲길"))
+
+            recyclerItemAdapter.datas = datas
+            recyclerItemAdapter.notifyDataSetChanged()
+
+
+            //        val textView: TextView = binding.textDashboard
+//        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+//            textView.text = it
+//        })
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
+        }
     }
 }
