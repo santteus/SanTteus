@@ -1,10 +1,16 @@
 package com.example.santteus.ui.home
 
+import android.Manifest
 import android.content.Context
+import android.content.Context.LOCATION_SERVICE
+import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 
 import android.os.SystemClock
@@ -12,8 +18,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import com.example.santteus.MainActivity
 import com.example.santteus.databinding.FragmentHomeBinding
 import com.example.santteus.ui.run.RunFinishFragment
 import com.google.android.gms.maps.*
@@ -32,6 +44,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
     private val binding get() = _binding ?: error("Binding이 초기화되지 않았습니다.")
 
     private lateinit var mView: MapView
+    private val PERMISSIONS_REQUEST_CODE = 999
+    lateinit var mainActivity : MainActivity
+    val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
 
     private var time = 0
     private var isRunning = false
@@ -55,9 +70,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        mainActivity = context as MainActivity
         mView = binding.map
         mView.onCreate(savedInstanceState)
         mView.getMapAsync(this)
+
         setListeners()
         setBottomSheet()
         setSensorCount()
@@ -145,11 +163,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+
         val marker = LatLng(37.568291, 126.997780)
-        googleMap.addMarker(MarkerOptions().position(marker).title("여기"))
+        googleMap.addMarker(MarkerOptions().position(marker).title("기본 위치"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
-
 
         val database : FirebaseDatabase = FirebaseDatabase.getInstance()
         val myRef : DatabaseReference = database.getReference("road")
@@ -170,23 +188,31 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
                     googleMap.addMarker(MarkerOptions().position(marker).title(name))
 
                     // moveCamera 현위치로 수정 필요
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
-                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+                    //googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
+                    //googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
 
+                    if (checkSelfPermission(
+                            mainActivity,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                            mainActivity,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), // 1
+                            PERMISSIONS_REQUEST_CODE) // 2
+                        return
+                    }
+
+                    googleMap.isMyLocationEnabled = true
+                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                //Log.e("MainActivity", String.valueOf(databaseError.toException())); // 에러문 출력
+                //Log.e("MainActivity", String.valueOf(databaseError.tException())); // 에러문 출력
             }
         })
-
-
-        //val marker = LatLng(37.568291,126.997780)
-        //googleMap.addMarker(MarkerOptions().position(marker).title("여기"))
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
-        //googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
-
     }
 
     override fun onDestroyView() {
