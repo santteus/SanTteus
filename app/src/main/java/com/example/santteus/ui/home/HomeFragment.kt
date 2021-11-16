@@ -2,6 +2,7 @@ package com.example.santteus.ui.home
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -136,6 +137,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         binding.ivHomeSearch.setOnClickListener {
 
         }
+
+        binding.btnHomeList.setOnClickListener {
+            activity?.let{
+                val intent = Intent(context, HomeListActivity::class.java)
+                startActivity(intent)
+            }        }
     }
 
     private fun start() {
@@ -202,17 +209,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), // 1
-                PERMISSIONS_REQUEST_CODE
-            ) // 2
-            return
+
         }
 
         mMap?.isMyLocationEnabled = true
         mMap?.moveCamera(CameraUpdateFactory.zoomTo(15f))
 
         createMark()
+
+        googleMap.setOnMarkerClickListener(this)
     }
 
     // 카테고리 선택
@@ -278,7 +283,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 //Log.e("MainActivity", String.valueOf(databaseError.tException())); // 에러문 출력
             }
         })
-        mMap?.setOnMarkerClickListener(this)
     }
 
     // 카테고리 클릭 시 마커 변경

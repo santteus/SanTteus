@@ -10,6 +10,18 @@
     <string name="home_diet">다이어트</string>
     <string name="home_strength">체력증진</string>
     <string name="home_mood">기분전환</string>
+    
+    <!-- homelist -->
+    <string name="home_name">보라매공원 산책길</string>
+    <string name="home_level">매우 쉬움</string>
+    <string name="home_total_distance">1.63km</string>
+    <string name="home_time">30분</string>
+    <string name="home_toilet">화장실</string>
+    <string name="home_convenience">편의점</string>
+    <string name="home_bar">|</string>
+    <string name="home_title_distance">현재 위치에서</string>
+    <string name="home_distance">200m</string>
+    <string name="home_map">지도</string>
 
     <!-- sign -->
     <string name="sign_in_welcom">Welcome!</string>
@@ -29,7 +41,7 @@
     <string name="sign_up_create_user">계정 생성</string>
     <string name="sign_up_woman">여성</string>
     <string name="sign_up_man">남성</string>
-    
+
     <!-- run -->
     <string name="run_complete">저장 완료!</string>
     <string name="run_complete_detail">운동 결과가 기록에 저장되었습니다.</string>
@@ -45,7 +57,7 @@
     <string name="run_finish_top">상위</string>
     <string name="run_start_finish">운동 종료</string>
     <string name="run_start_stop">일시 정지</string>
-    
+
     <!-- mypage-->
     <string name="my_page_title">마이페이지</string>
     <string name="my_page_title_bmi">BMI</string>
