@@ -1,22 +1,35 @@
 package com.example.santteus.ui.run
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.*
 import com.example.santteus.data.FirebaseService
 import com.example.santteus.domain.entity.User
+import com.example.santteus.domain.entity.Walk
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RunViewModel : ViewModel() {
 
+    private val repo=FirebaseService()
 
-    private val _userWalk = MutableLiveData<User.Walk>()
-    val userWalk: LiveData<User.Walk> = _userWalk
+    private val _userWalk = MutableLiveData<Walk>()
+    val userWalk: LiveData<Walk> = _userWalk
 
-    fun requestUserWalk(time: String, timeSeconds: Int, distance: String, step: Int) {
-        viewModelScope.launch {
-            _userWalk.postValue(FirebaseService.getUserWalk(time, timeSeconds, distance, step))
+    fun requestUserWalk(fragment:Fragment,time: String, timeSeconds: Int, distance: String, step: Int,name:String) {
+        repo.getUserWalk(time, timeSeconds, distance, step,name)
+        repo.userWalk.observe(fragment, Observer {
+            _userWalk.postValue(it)
+        })
+
+    }
+
+
+    fun requestSetUserWalk(walk:Walk){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.setUserWalk(walk)
+
         }
     }
 }

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-
+        <variable
+            name="vm"
+            type="com.example.santteus.ui.run.RunViewModel" />
 
     </data>
 
@@ -83,6 +85,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <include
+            android:id="@+id/detail_bottom"
+            layout="@layout/layout_detail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+      
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_home_diet"
             android:layout_width="wrap_content"
