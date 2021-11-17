@@ -31,6 +31,7 @@
         <entry key="app/src/main/res/layout/fragment_run_complete.xml" value="0.3307291666666667" />
         <entry key="app/src/main/res/layout/fragment_run_finish.xml" value="0.34479166666666666" />
         <entry key="app/src/main/res/layout/fragment_run_start.xml" value="0.34479166666666666" />
+        <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.24259259259259258" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3729166666666667" />
       </map>

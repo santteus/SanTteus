@@ -40,7 +40,7 @@ class FirebaseService {
                                 database.getReference("walk_avg").child("f")
                             myRef.addValueEventListener(object : ValueEventListener {
                                 override fun onDataChange(userSnapshot: DataSnapshot) {
-                                    val step = 0
+                                    //val step = 0
                                     var age = 0
                                     var top = 0
                                     val step10 = userSnapshot.child("10대").value.toString().toInt()
@@ -53,7 +53,7 @@ class FirebaseService {
 
                                     if (step < step10) {
                                         age = 10
-                                        top = ((10000 / step10) * 100)
+                                        top = ((step / step10) * 100)
                                         val walk = Walk(time, distance, age, step, cal, top,name)
                                         userWalk.postValue(walk)
 
