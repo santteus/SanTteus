@@ -70,6 +70,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
 
+
         <include
             android:id="@+id/mypage_bottom"
             layout="@layout/fragment_run_start"
