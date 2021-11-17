@@ -361,10 +361,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
             binding.mypageBottom.tvRunDistanceCount.text =
                 DistanceManager.getDistance(latitude1, longitude1, latitude, longitude).toString()
         }
-        val marker = LatLng(37.568291, 126.997780)
-        mMap?.addMarker(MarkerOptions().position(marker).title("기본 위치"))
+
+        val marker = LatLng(latitude, longitude)
+        mMap?.addMarker(MarkerOptions().position(marker).title("처음 위치"))
         mMap?.moveCamera(CameraUpdateFactory.newLatLng(marker))
         mMap?.moveCamera(CameraUpdateFactory.zoomTo(15f))
+
 
         if (checkSelfPermission(
                 mainActivity,
