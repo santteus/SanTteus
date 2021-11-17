@@ -1,10 +1,12 @@
 package com.example.santteus.ui.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -32,18 +34,19 @@ import com.example.santteus.MainActivity
 import com.example.santteus.databinding.FragmentHomeBinding
 import com.example.santteus.ui.run.RunFinishFragment
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.util.*
 import com.google.firebase.database.*
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.example.santteus.R;
 import com.example.santteus.ui.run.RunViewModel
 import com.example.santteus.util.DistanceManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.maps.model.*
 import java.io.IOException
 
 class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, GoogleMap.OnMarkerClickListener {
@@ -81,6 +84,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
     private lateinit var detailBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var sensorManager :SensorManager
     private lateinit var locationManager: LocationManager
+    private val polyLineOptions= PolylineOptions().width(5f).color(Color.RED)
     var latitude:Double = 0.0
     var longitude:Double = 0.0
     var latitude1:Double = 0.0
@@ -89,6 +93,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
     var longitude2:Double = 0.0
     val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     val PERMISSIONS_REQUEST_CODE_GPS = 100
+
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient // 위치 요청 메소드 담고 있는 객체
+    private lateinit var locationRequest:LocationRequest // 위치 요청할 때 넘겨주는 데이터에 관한 객체
+    private lateinit var locationCallback:MyLocationCallBack // 위치 확인되고 호출되는 객체
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,17 +109,60 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         mainActivity = context as MainActivity
         mView = binding.map
         mView.onCreate(savedInstanceState)
-        mView.getMapAsync(this)
+
 
         setListeners()
         setBottomSheet()
         setSensorCount()
         setDetailBottomSheet()
-
         mMap?.let { onMapReady(it) }
         checkCategory()
         getLocation()
+        mView.getMapAsync(this)
         return binding.root
+    }
+    @SuppressLint("MissingPermission")
+    private fun addLocationListener(){
+        // 위치 정보 요청
+        // (정보 요청할 때 넘겨줄 데이터)에 관한 객체, 위치 갱신되면 호출되는 콜백, 특정 스레드 지정(별 일 없으니 null)
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,null)
+    }
+
+
+
+    private fun locationInit(){
+        // FusedLocationProviderClient 객체 생성
+        // 이 객체의 메소드를 통해 위치 정보를 요청할 수 있음
+        fusedLocationProviderClient= FusedLocationProviderClient(requireActivity())
+        // 위치 갱신되면 호출되는 콜백 생성
+        locationCallback=MyLocationCallBack()
+        // (정보 요청할 때 넘겨줄 데이터)에 관한 객체 생성
+        locationRequest= LocationRequest()
+        locationRequest.priority=LocationRequest.PRIORITY_HIGH_ACCURACY // 가장 정확한 위치를 요청한다,
+        locationRequest.interval=10000 // 위치를 갱신하는데 필요한 시간 <밀리초 기준>
+        locationRequest.fastestInterval=5000 // 다른 앱에서 위치를 갱신했을 때 그 정보를 가져오는 시간 <밀리초 기준>
+    }
+    inner class MyLocationCallBack: LocationCallback(){
+        override fun onLocationResult(locationResult: LocationResult?) {
+            super.onLocationResult(locationResult)
+            // lastLocation프로퍼티가 가리키는 객체 주소를 받는다.
+            // 그 객체는 현재 경도와 위도를 프로퍼티로 갖는다.
+            // 그러나 gps가 꺼져 있거나 위치를 찾을 수 없을 때는 lastLocation은 null을 가진다.
+            val location = locationResult?.lastLocation
+            //  gps가 켜져 있고 위치 정보를 찾을 수 있을 때 다음 함수를 호출한다. <?. : 안전한 호출>
+            location?.run{
+                // 현재 경도와 위도를 LatLng메소드로 설정한다.
+                val latLng=LatLng(latitude,longitude)
+                // 카메라를 이동한다.(이동할 위치,줌 수치)
+                mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
+                // 마커를 추가한다.
+                //mMap?.addMarker(MarkerOptions().position(latLng).title("Changed Location"))
+                // polyLine에 좌표 추가
+                polyLineOptions.add(latLng)
+                // 선 그리기
+                mMap?.addPolyline(polyLineOptions)
+            }
+        }
     }
 
     private fun getLocation(){
@@ -181,6 +232,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
         binding.btnRun.setOnClickListener {
             getLocation()
+            locationInit()
+            addLocationListener()
             latitude1=latitude
             longitude1=longitude
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
