@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_home_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="13dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/home_name"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_home_level"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/rectangle_yellow_8"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/home_level"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_name"
+        app:layout_constraintStart_toEndOf="@+id/tv_home_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_name" />
+
+    <TextView
+        android:id="@+id/tv_home_total_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/home_total_distance"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_home_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_name" />
+
+    <TextView
+        android:id="@+id/tv_home_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/home_time"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_total_distance"
+        app:layout_constraintStart_toEndOf="@+id/tv_bar"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_total_distance" />
+
+    <TextView
+        android:id="@+id/tv_home_toilet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/home_toilet"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_bar2"
+        app:layout_constraintStart_toEndOf="@+id/tv_bar2"
+        app:layout_constraintTop_toTopOf="@+id/tv_bar2" />
+
+    <TextView
+        android:id="@+id/tv_home_convenience"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/home_convenience"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_toilet"
+        app:layout_constraintStart_toEndOf="@+id/tv_bar3"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_toilet" />
+
+    <TextView
+        android:id="@+id/tv_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/home_bar"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_total_distance"
+        app:layout_constraintStart_toEndOf="@+id/tv_home_total_distance"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_total_distance" />
+
+    <TextView
+        android:id="@+id/tv_bar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/home_bar"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_time"
+        app:layout_constraintStart_toEndOf="@+id/tv_home_time"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_time" />
+
+    <TextView
+        android:id="@+id/tv_bar3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/home_bar"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_toilet"
+        app:layout_constraintStart_toEndOf="@+id/tv_home_toilet"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_toilet" />
+
+    <TextView
+        android:id="@+id/tv_distance_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/home_title_distance"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_home_total_distance"
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_total_distance" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/home_distance"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_distance_title"
+        app:layout_constraintStart_toEndOf="@+id/tv_distance_title"
+        app:layout_constraintTop_toTopOf="@+id/tv_distance_title" />
+
+    <View
+        android:id="@+id/view7"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/santtues_E5E5E5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_distance_title" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,21 @@
 package com.example.santteus.ui.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.SystemClock
 import android.text.method.ScrollingMovementMethod
@@ -18,31 +25,44 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.santteus.MainActivity
 import com.example.santteus.databinding.FragmentHomeBinding
 import com.example.santteus.ui.run.RunFinishFragment
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.util.*
 import com.google.firebase.database.*
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.example.santteus.R;
+import com.example.santteus.ui.run.RunViewModel
+import com.example.santteus.util.DistanceManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.maps.model.*
+import java.io.IOException
 
 class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, GoogleMap.OnMarkerClickListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding ?: error("Binding이 초기화되지 않았습니다.")
 
+    private val viewModel:RunViewModel by activityViewModels()
+
     private lateinit var mView: MapView
     private val PERMISSIONS_REQUEST_CODE = 999
-    lateinit var mainActivity : MainActivity
+    private lateinit var mainActivity: MainActivity
+    private var mMap: GoogleMap? = null
+
+    private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+    private val myRef: DatabaseReference = database.getReference("road")
 
     // 전달용 변수
     private var roadName = ""
@@ -55,34 +75,140 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
     private var mSteps = 0
     private var mStepsCount = 0
 
-    private var userTime=""
-    private var userTimeSeconds=0
-    private var userDistance=""
-    private var userStep=0
+    private var userTime = ""
+    private var userTimeSeconds = 0
+    private var userDistance = ""
+    private var userStep = 0
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var detailBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var sensorManager :SensorManager
+    private lateinit var locationManager: LocationManager
+    private val polyLineOptions= PolylineOptions().width(5f).color(Color.RED)
+    var latitude:Double = 0.0
+    var longitude:Double = 0.0
+    var latitude1:Double = 0.0
+    var longitude1:Double = 0.0
+    var latitude2:Double = 0.0
+    var longitude2:Double = 0.0
+    val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    val PERMISSIONS_REQUEST_CODE_GPS = 100
+
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient // 위치 요청 메소드 담고 있는 객체
+    private lateinit var locationRequest:LocationRequest // 위치 요청할 때 넘겨주는 데이터에 관한 객체
+    private lateinit var locationCallback:MyLocationCallBack // 위치 확인되고 호출되는 객체
 
     override fun onCreateView(
-
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        binding.vm=viewModel
+        binding.lifecycleOwner=viewLifecycleOwner
         mainActivity = context as MainActivity
         mView = binding.map
         mView.onCreate(savedInstanceState)
-        mView.getMapAsync(this)
+
 
         setListeners()
         setBottomSheet()
         setSensorCount()
         setDetailBottomSheet()
-
+        mMap?.let { onMapReady(it) }
+        checkCategory()
+        getLocation()
+        mView.getMapAsync(this)
         return binding.root
+    }
+    @SuppressLint("MissingPermission")
+    private fun addLocationListener(){
+        // 위치 정보 요청
+        // (정보 요청할 때 넘겨줄 데이터)에 관한 객체, 위치 갱신되면 호출되는 콜백, 특정 스레드 지정(별 일 없으니 null)
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,null)
+    }
+
+
+
+    private fun locationInit(){
+        // FusedLocationProviderClient 객체 생성
+        // 이 객체의 메소드를 통해 위치 정보를 요청할 수 있음
+        fusedLocationProviderClient= FusedLocationProviderClient(requireActivity())
+        // 위치 갱신되면 호출되는 콜백 생성
+        locationCallback=MyLocationCallBack()
+        // (정보 요청할 때 넘겨줄 데이터)에 관한 객체 생성
+        locationRequest= LocationRequest()
+        locationRequest.priority=LocationRequest.PRIORITY_HIGH_ACCURACY // 가장 정확한 위치를 요청한다,
+        locationRequest.interval=10000 // 위치를 갱신하는데 필요한 시간 <밀리초 기준>
+        locationRequest.fastestInterval=5000 // 다른 앱에서 위치를 갱신했을 때 그 정보를 가져오는 시간 <밀리초 기준>
+    }
+    inner class MyLocationCallBack: LocationCallback(){
+        override fun onLocationResult(locationResult: LocationResult?) {
+            super.onLocationResult(locationResult)
+            // lastLocation프로퍼티가 가리키는 객체 주소를 받는다.
+            // 그 객체는 현재 경도와 위도를 프로퍼티로 갖는다.
+            // 그러나 gps가 꺼져 있거나 위치를 찾을 수 없을 때는 lastLocation은 null을 가진다.
+            val location = locationResult?.lastLocation
+            //  gps가 켜져 있고 위치 정보를 찾을 수 있을 때 다음 함수를 호출한다. <?. : 안전한 호출>
+            location?.run{
+                // 현재 경도와 위도를 LatLng메소드로 설정한다.
+                val latLng=LatLng(latitude,longitude)
+                // 카메라를 이동한다.(이동할 위치,줌 수치)
+                mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
+                // 마커를 추가한다.
+                //mMap?.addMarker(MarkerOptions().position(latLng).title("Changed Location"))
+                // polyLine에 좌표 추가
+                polyLineOptions.add(latLng)
+                // 선 그리기
+                mMap?.addPolyline(polyLineOptions)
+            }
+        }
+    }
+
+    private fun getLocation(){
+        locationManager = (context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager?)!!
+        var userLocation: Location = getLatLng()
+        if(userLocation != null){
+            latitude = userLocation.latitude
+            longitude = userLocation.longitude
+            Log.d("CheckCurrentLocation", "현재 내 위치 값: ${latitude}, ${longitude}")
+
+            var mGeoCoder =  Geocoder(context, Locale.KOREAN)
+            var mResultList: List<Address>? = null
+            try{
+                mResultList = mGeoCoder.getFromLocation(
+                    latitude!!, longitude!!, 1
+                )
+            }catch(e: IOException){
+                e.printStackTrace()
+            }
+            if(mResultList != null){
+                Log.d("CheckCurrentLocation", mResultList[0].getAddressLine(0))
+            }
+        }
+    }
+
+    private fun getLatLng(): Location{
+        var currentLatLng: Location? = null
+        var hasFineLocationPermission = ContextCompat.checkSelfPermission(requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION)
+        var hasCoarseLocationPermission = ContextCompat.checkSelfPermission(requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if(hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED){
+            val locatioNProvider = LocationManager.GPS_PROVIDER
+            currentLatLng = locationManager?.getLastKnownLocation(locatioNProvider)
+        }else{
+            if(ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), REQUIRED_PERMISSIONS[0])){
+                Toast.makeText(requireContext(), "앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+                ActivityCompat.requestPermissions(requireActivity(), REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE_GPS)
+            }else{
+                ActivityCompat.requestPermissions(requireActivity(), REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE_GPS)
+            }
+            currentLatLng = getLatLng()
+        }
+        return currentLatLng!!
     }
 
     private fun setSensorCount() {
@@ -105,14 +231,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         }
 
         binding.btnRun.setOnClickListener {
+            getLocation()
+            locationInit()
+            addLocationListener()
+            latitude1=latitude
+            longitude1=longitude
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             bottomSheetBehavior.isDraggable = false
             start()
             mSteps = 0
             mStepsCount = 0
+
         }
         binding.mypageBottom.btnStartFinish.setOnClickListener {
-            RunFinishFragment(userTime,userTimeSeconds,userDistance,userStep).show(parentFragmentManager, "run")
+            latitude2=latitude
+            longitude2=longitude
+            userDistance=DistanceManager.getDistance(latitude1,longitude1,latitude2,longitude2).toString()
+            Log.d("asdf12344",userDistance.toString())
+            RunFinishFragment(userTime,userTimeSeconds,userDistance,userStep,roadName).show(parentFragmentManager, "run")
             reset()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -125,6 +261,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         binding.ivHomeSearch.setOnClickListener {
 
         }
+
+        binding.btnHomeList.setOnClickListener {
+            activity?.let{
+                val intent = Intent(context, HomeListActivity::class.java)
+                startActivity(intent)
+            }        }
     }
 
     private fun start() {
@@ -137,8 +279,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
             val s = time % 60
 
             activity?.runOnUiThread {
-                userTimeSeconds=s
-                userTime="%1$02d:%2$02d:%3$02d".format(h, m, s)
+                userTimeSeconds = s
+                userTime = "%1$02d:%2$02d:%3$02d".format(h, m, s)
                 binding.mypageBottom.tvRunTime.text = "%1$02d:%2$02d:%3$02d".format(h, m, s)
 
             }
@@ -176,55 +318,93 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        if(latitude2==0.0 && longitude2==0.0){
+            binding.mypageBottom.tvRunDistanceCount.text="0.00"
+        }else {
+            binding.mypageBottom.tvRunDistanceCount.text =
+                DistanceManager.getDistance(latitude1, longitude1, latitude, longitude).toString()
+        }
         val marker = LatLng(37.568291, 126.997780)
-        googleMap.addMarker(MarkerOptions().position(marker).title("기본 위치"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
-        googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+        mMap?.addMarker(MarkerOptions().position(marker).title("기본 위치"))
+        mMap?.moveCamera(CameraUpdateFactory.newLatLng(marker))
+        mMap?.moveCamera(CameraUpdateFactory.zoomTo(15f))
 
-        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-        val myRef : DatabaseReference = database.getReference("road")
-        var latitude: Double
-        var longitude: Double
-        var name: String
+        if (checkSelfPermission(
+                mainActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                mainActivity,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+
+        }
+
+        mMap?.isMyLocationEnabled = true
+        mMap?.moveCamera(CameraUpdateFactory.zoomTo(15f))
+
+        createMark()
+
+        googleMap.setOnMarkerClickListener(this)
+    }
+
+    // 카테고리 선택
+    private fun checkCategory() {
+        binding.btnHomeDiet.setOnClickListener {
+            binding.btnHomeDiet.isSelected = binding.btnHomeDiet.isSelected != true
+            if(binding.btnHomeDiet.isSelected) {
+                recommendedMark()
+            }else {
+                createMark()
+            }
+        }
+
+        binding.btnHomeStrength.setOnClickListener {
+            binding.btnHomeStrength.isSelected = binding.btnHomeStrength.isSelected != true
+            if(binding.btnHomeStrength.isSelected) {
+                recommendedMark()
+            }else {
+                createMark()
+            }
+        }
+
+        binding.btnHomeMood.setOnClickListener {
+            binding.btnHomeMood.isSelected = binding.btnHomeMood.isSelected != true
+            if(binding.btnHomeMood.isSelected) {
+                recommendedMark()
+            }else {
+                createMark()
+            }
+        }
+
+    }
+
+    // 산책로 마커 생성
+    private fun createMark(){
         myRef.addValueEventListener(object : ValueEventListener {
-
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 for (snapshot in dataSnapshot.children) {
 
-                    latitude = snapshot.child("COURS_SPOT_LA").value as Double
-                    longitude = snapshot.child("COURS_SPOT_LO").value as Double
-                    name = snapshot.child("WLK_COURS_NM").value as String
-
+                    var latitude = snapshot.child("COURS_SPOT_LA").value as Double
+                    var longitude = snapshot.child("COURS_SPOT_LO").value as Double
+                    var name = snapshot.child("WLK_COURS_NM").value as String
 
                     // custom marker
-                    val bitmapdraw = context!!.resources.getDrawable(R.drawable.pin_normal,context!!.theme) as BitmapDrawable
+                    val bitmapdraw = context!!.resources.getDrawable(
+                        R.drawable.pin_normal,
+                        context!!.theme
+                    ) as BitmapDrawable
                     val b = bitmapdraw.bitmap
                     val smallMarker = Bitmap.createScaledBitmap(b, 95, 140, false)
 
-                    val marker = LatLng(latitude,longitude)
+                    val marker = LatLng(latitude, longitude)
 
-                    googleMap.addMarker(MarkerOptions().position(marker).title(name).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)))
-
-                    // moveCamera 현위치로 수정 필요
-                    //googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
-                    //googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
-
-                    if (checkSelfPermission(
-                            mainActivity,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(
-                            mainActivity,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), // 1
-                            PERMISSIONS_REQUEST_CODE) // 2
-                        return
-                    }
-
-                    googleMap.isMyLocationEnabled = true
-                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+                    mMap?.addMarker(
+                        MarkerOptions().position(marker).title(name)
+                            .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
+                    )
                 }
             }
 
@@ -232,14 +412,77 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 //Log.e("MainActivity", String.valueOf(databaseError.tException())); // 에러문 출력
             }
         })
+    }
 
-        googleMap.setOnMarkerClickListener(this)
+    // 카테고리 클릭 시 마커 변경
+    private fun recommendedMark() {
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-        //val marker = LatLng(37.568291,126.997780)
-        //googleMap.addMarker(MarkerOptions().position(marker).title("여기"))
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
-        //googleMap.moveCamera(CameraUpdateFactory.zoomTo(15f))
+                for (snapshot in dataSnapshot.children) {
 
+                    val latitude = snapshot.child("COURS_SPOT_LA").value as Double
+                    val longitude = snapshot.child("COURS_SPOT_LO").value as Double
+                    val name = snapshot.child("WLK_COURS_NM").value as String
+                    val level = snapshot.child("COURS_LEVEL_NM").value as String
+
+                    if (binding.btnHomeDiet.isSelected) {
+                       if (level == "어려움" || level == "매우 어려움") {
+                            val bitmapdraw2 = context!!.resources.getDrawable(
+                                R.drawable.pin_recommend,
+                                context!!.theme
+                            ) as BitmapDrawable
+                            val b2 = bitmapdraw2.bitmap
+                            val smallMarker2 = Bitmap.createScaledBitmap(b2, 95, 140, false)
+
+                            val marker2 = LatLng(latitude, longitude)
+                            mMap?.addMarker(
+                                MarkerOptions().position(marker2).title(name)
+                                    .icon(BitmapDescriptorFactory.fromBitmap(smallMarker2))
+                            )
+                        }
+                    }
+
+                    if (binding.btnHomeStrength.isSelected) {
+                        if (level == "보통") {
+                            val bitmapdraw2 = context!!.resources.getDrawable(
+                                R.drawable.pin_recommend,
+                                context!!.theme
+                            ) as BitmapDrawable
+                            val b2 = bitmapdraw2.bitmap
+                            val smallMarker2 = Bitmap.createScaledBitmap(b2, 95, 140, false)
+
+                            val marker2 = LatLng(latitude, longitude)
+                            mMap?.addMarker(
+                                MarkerOptions().position(marker2).title(name)
+                                    .icon(BitmapDescriptorFactory.fromBitmap(smallMarker2))
+                            )
+                        }
+                    }
+
+                    if (binding.btnHomeMood.isSelected) {
+                        if (level == "쉬움" || level == "매우 쉬움") {
+                            val bitmapdraw2 = context!!.resources.getDrawable(
+                                R.drawable.pin_recommend,
+                                context!!.theme
+                            ) as BitmapDrawable
+                            val b2 = bitmapdraw2.bitmap
+                            val smallMarker2 = Bitmap.createScaledBitmap(b2, 95, 140, false)
+
+                            val marker2 = LatLng(latitude, longitude)
+                            mMap?.addMarker(
+                                MarkerOptions().position(marker2).title(name)
+                                    .icon(BitmapDescriptorFactory.fromBitmap(smallMarker2))
+                            )
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     override fun onDestroyView() {
@@ -288,7 +531,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 mStepsCount = it.toInt()
             }
             mSteps = it.toInt() - mStepsCount
-            userStep=mSteps
+            userStep = mSteps
             binding.mypageBottom.tvRunStepCount.text = mSteps.toString()
         }
     }

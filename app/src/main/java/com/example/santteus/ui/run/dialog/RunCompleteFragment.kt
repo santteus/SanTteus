@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
+import com.example.santteus.R
 import com.example.santteus.databinding.FragmentRunCompleteBinding
 
 
@@ -33,6 +35,7 @@ class RunCompleteFragment : DialogFragment() {
         binding.btnRunComplete.setOnClickListener {
             // 기록 보러 가기
             dismiss()
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_record)
         }
 
     }

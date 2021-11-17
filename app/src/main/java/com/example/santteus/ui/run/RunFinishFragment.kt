@@ -7,21 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.santteus.databinding.FragmentRunFinishBinding
 import com.example.santteus.ui.run.dialog.RunCompleteFragment
 
 
-class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: Int) :
+class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: Int,name:String) :
     DialogFragment() {
 
     lateinit var binding: FragmentRunFinishBinding
-    private val viewModel: RunViewModel by viewModels()
+    private val viewModel: RunViewModel by activityViewModels()
 
     var userTime = time
     var userTimeSeconds = timeSeconds
     var userDistance = distance
     var userStep = step
+    var roadName = name
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,16 +39,21 @@ class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: 
         return binding.root
     }
 
+
     private fun setListeners() {
         binding.btnRunSave.setOnClickListener {
             RunCompleteFragment().show(parentFragmentManager, "complete")
+            viewModel.requestSetUserWalk(viewModel.userWalk.value!!)
             dialog?.dismiss()
+        }
+        binding.imageButton.setOnClickListener {
+            dismiss()
         }
 
     }
 
     private fun setRunView() {
-        viewModel.requestUserWalk(userTime, userTimeSeconds, userDistance, userStep)
+        viewModel.requestUserWalk(this,userTime, userTimeSeconds, userDistance, userStep,roadName)
     }
 
 
