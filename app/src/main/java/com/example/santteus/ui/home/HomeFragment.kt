@@ -116,7 +116,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         setSensorCount()
         setDetailBottomSheet()
         mMap?.let { onMapReady(it) }
-        checkCategory()
+        //checkCategory()
         getLocation()
         mView.getMapAsync(this)
         return binding.root
@@ -267,6 +267,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 val intent = Intent(context, HomeListActivity::class.java)
                 startActivity(intent)
             }        }
+
+        checkCategory()
     }
 
     private fun start() {
@@ -357,6 +359,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 recommendedMark()
             }else {
                 createMark()
+                if(binding.btnHomeStrength.isSelected|| binding.btnHomeMood.isSelected){
+                    recommendedMark()
+                }
             }
         }
 
@@ -366,6 +371,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 recommendedMark()
             }else {
                 createMark()
+                if(binding.btnHomeDiet.isSelected|| binding.btnHomeMood.isSelected){
+                    recommendedMark()
+                }
             }
         }
 
@@ -375,6 +383,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 recommendedMark()
             }else {
                 createMark()
+                if(binding.btnHomeStrength.isSelected|| binding.btnHomeDiet.isSelected){
+                    recommendedMark()
+                }
             }
         }
 
@@ -382,6 +393,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
     // 산책로 마커 생성
     private fun createMark(){
+
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
