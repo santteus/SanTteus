@@ -48,6 +48,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.model.*
 import java.io.IOException
+import java.lang.Exception
 
 class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, GoogleMap.OnMarkerClickListener {
 
@@ -116,7 +117,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         setSensorCount()
         setDetailBottomSheet()
         mMap?.let { onMapReady(it) }
-        checkCategory()
+        //checkCategory()
         getLocation()
         mView.getMapAsync(this)
         return binding.root
@@ -259,7 +260,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
         // 검색 버튼 클릭 시
         binding.ivHomeSearch.setOnClickListener {
+            val searchBox = binding.etHomeSearch
 
+            // 구글맵 검색 하는 부분
+            val searchButton = binding.ivHomeSearch
+            searchButton.setOnClickListener{
+                val searchText = searchBox.text.toString()
+                //var mGeoCoder =  Geocoder(context, Locale.KOREAN)
+                val geocoder = Geocoder(context)
+                var addresses: List<Address?>? = null
+                try {
+                    addresses = geocoder.getFromLocationName(searchText, 3)
+                    if (addresses != null && !addresses.equals(" ")) {
+                        search(addresses)
+                    }
+                } catch (e: Exception) {
+                }
+            }
         }
 
         binding.btnHomeList.setOnClickListener {
@@ -267,6 +284,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 val intent = Intent(context, HomeListActivity::class.java)
                 startActivity(intent)
             }        }
+
+        checkCategory()
     }
 
     private fun start() {
@@ -317,6 +336,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         })
     }
 
+    private fun search(addresses: List<Address>) {
+        val address = addresses[0]
+        val latLng = LatLng(address.latitude, address.longitude)
+        val addressText = String.format(
+            "%s, %s",
+            if (address.maxAddressLineIndex > 0) address
+                .getAddressLine(0) else " ", address.featureName
+        )
+
+        val markerOptions = MarkerOptions()
+        markerOptions.position(latLng)
+        markerOptions.title(addressText)
+
+        mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+        mMap?.animateCamera(CameraUpdateFactory.zoomTo(15f))
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         if(latitude2==0.0 && longitude2==0.0){
@@ -357,6 +393,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 recommendedMark()
             }else {
                 createMark()
+                if(binding.btnHomeStrength.isSelected|| binding.btnHomeMood.isSelected){
+                    recommendedMark()
+                }
             }
         }
 
@@ -366,6 +405,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 recommendedMark()
             }else {
                 createMark()
+                if(binding.btnHomeDiet.isSelected|| binding.btnHomeMood.isSelected){
+                    recommendedMark()
+                }
             }
         }
 
@@ -375,6 +417,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 recommendedMark()
             }else {
                 createMark()
+                if(binding.btnHomeStrength.isSelected|| binding.btnHomeDiet.isSelected){
+                    recommendedMark()
+                }
             }
         }
 
@@ -382,6 +427,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
     // 산책로 마커 생성
     private fun createMark(){
+
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
