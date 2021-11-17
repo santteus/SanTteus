@@ -48,6 +48,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.model.*
 import java.io.IOException
+import java.lang.Exception
 
 class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, GoogleMap.OnMarkerClickListener {
 
@@ -259,7 +260,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
         // 검색 버튼 클릭 시
         binding.ivHomeSearch.setOnClickListener {
+            val searchBox = binding.etHomeSearch
 
+            // 구글맵 검색 하는 부분
+            val searchButton = binding.ivHomeSearch
+            searchButton.setOnClickListener{
+                val searchText = searchBox.text.toString()
+                //var mGeoCoder =  Geocoder(context, Locale.KOREAN)
+                val geocoder = Geocoder(context)
+                var addresses: List<Address?>? = null
+                try {
+                    addresses = geocoder.getFromLocationName(searchText, 3)
+                    if (addresses != null && !addresses.equals(" ")) {
+                        search(addresses)
+                    }
+                } catch (e: Exception) {
+                }
+            }
         }
 
         binding.btnHomeList.setOnClickListener {
@@ -317,6 +334,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
             }
         })
+    }
+
+    private fun search(addresses: List<Address>) {
+        val address = addresses[0]
+        val latLng = LatLng(address.latitude, address.longitude)
+        val addressText = String.format(
+            "%s, %s",
+            if (address.maxAddressLineIndex > 0) address
+                .getAddressLine(0) else " ", address.featureName
+        )
+
+        val markerOptions = MarkerOptions()
+        markerOptions.position(latLng)
+        markerOptions.title(addressText)
+
+        mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+        mMap?.animateCamera(CameraUpdateFactory.zoomTo(15f))
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
