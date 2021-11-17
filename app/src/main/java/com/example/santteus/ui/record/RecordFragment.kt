@@ -62,13 +62,13 @@ class RecordFragment : Fragment() {
         var barChart: BarChart = binding.barChart // barChart 생성
 
         val entries = ArrayList<BarEntry>()
-        entries.add(BarEntry(1.2f,10000.0f))
-        entries.add(BarEntry(2.2f,5000.0f))
-        entries.add(BarEntry(3.2f,7000.0f))
-        entries.add(BarEntry(4.2f,9000.0f))
-        entries.add(BarEntry(5.2f,7000.0f))
-        entries.add(BarEntry(6.2f,13000.0f))
-        entries.add(BarEntry(7.2f,9000.0f))
+        entries.add(BarEntry(1f,7000.0f))
+        entries.add(BarEntry(2f,6000.0f))
+        entries.add(BarEntry(3f,3500.0f))
+        entries.add(BarEntry(4f,5000.0f))
+        entries.add(BarEntry(5f,7000.0f))
+        entries.add(BarEntry(6f,10000.0f))
+        entries.add(BarEntry(7f,3500.0f))
 
         barChart.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
@@ -133,10 +133,13 @@ class RecordFragment : Fragment() {
         binding.recyclerview.adapter = recyclerItemAdapter
 
         datas.apply {
-            add(BadgeData("보라매공원"))
+            add(BadgeData("전쟁기념관"))
             add(BadgeData("모시마루"))
             add(BadgeData("거북이마을"))
             add(BadgeData("천년의숲길"))
+            add(BadgeData("보라매공원"))
+            add(BadgeData("덕수궁산책길"))
+            add(BadgeData("한남매봉공원"))
 
             recyclerItemAdapter.datas = datas
             recyclerItemAdapter.notifyDataSetChanged()

@@ -655,7 +655,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
     private fun setDetailBottomSheet() {
         detailBottomSheetBehavior = BottomSheetBehavior.from(binding.detailBottom.bottomView)
-        detailBottomSheetBehavior.isGestureInsetBottomIgnored = true
+        //detailBottomSheetBehavior.isGestureInsetBottomIgnored = true
         detailBottomSheetBehavior.apply {
             state = BottomSheetBehavior.STATE_HIDDEN
             isDraggable = true
@@ -664,7 +664,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                    //detailBottomSheetBehavior.peekHeight = 430
+                    detailBottomSheetBehavior.peekHeight = 430
 //                    if (newState != BottomSheetBehavior.STATE_EXPANDED){
 //                        detailBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
 //                        detailBottomSheetBehavior.peekHeight = 430
