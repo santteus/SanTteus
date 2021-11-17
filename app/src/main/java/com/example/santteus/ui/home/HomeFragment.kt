@@ -262,21 +262,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         binding.ivHomeSearch.setOnClickListener {
             val searchBox = binding.etHomeSearch
 
-            // 구글맵 검색 하는 부분
-            val searchButton = binding.ivHomeSearch
-            searchButton.setOnClickListener{
-                val searchText = searchBox.text.toString()
-                //var mGeoCoder =  Geocoder(context, Locale.KOREAN)
-                val geocoder = Geocoder(context)
-                var addresses: List<Address?>? = null
-                try {
-                    addresses = geocoder.getFromLocationName(searchText, 3)
-                    if (addresses != null && !addresses.equals(" ")) {
-                        search(addresses)
-                    }
-                } catch (e: Exception) {
+            val searchText = searchBox.text.toString()
+            val geocoder = Geocoder(context)
+            var addresses: List<Address?>? = null
+            try {
+                addresses = geocoder.getFromLocationName(searchText, 3)
+                if (addresses != null && !addresses.equals(" ")) {
+                    search(addresses)
                 }
+            } catch (e: Exception) {
             }
+            searchBox.setText("")
         }
 
         binding.btnHomeList.setOnClickListener {
