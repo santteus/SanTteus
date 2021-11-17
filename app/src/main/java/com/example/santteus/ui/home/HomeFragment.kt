@@ -679,7 +679,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 //                        detailBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
 //                        detailBottomSheetBehavior.peekHeight = 430
 //                    }
-
                 }
             }
 
