@@ -20,6 +20,7 @@
             android:background="@drawable/detailbackground"
             app:behavior_fitToContents="false"
             app:behavior_hideable="true"
+            app:behavior_draggable="true"
             app:behavior_peekHeight="130dp"
             android:maxHeight="430dp"
             app:layout_behavior="@string/bottom_sheet_behavior">
