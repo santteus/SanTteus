@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.example.santteus.databinding.FragmentRunFinishBinding
 import com.example.santteus.ui.run.dialog.RunCompleteFragment
 
@@ -25,6 +24,7 @@ class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: 
     var userStep = step
     var roadName = name
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,10 +33,17 @@ class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: 
         binding.vm = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
+        observers()
         setListeners()
         setRunView()
         return binding.root
+    }
+
+    private fun observers(){
+        viewModel.imageRoad.observe(viewLifecycleOwner){
+            binding.imageViewRoad.setImageBitmap(it)
+        }
+
     }
 
 
