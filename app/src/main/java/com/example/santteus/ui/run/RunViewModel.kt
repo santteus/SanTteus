@@ -1,5 +1,6 @@
 package com.example.santteus.ui.run
 
+import android.graphics.Bitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import com.example.santteus.data.FirebaseService
@@ -17,6 +18,9 @@ class RunViewModel : ViewModel() {
     private val _userWalk = MutableLiveData<Walk>()
     val userWalk: LiveData<Walk> = _userWalk
 
+    private val _imageRoad = MutableLiveData<Bitmap>()
+    val imageRoad: LiveData<Bitmap> = _imageRoad
+
     fun requestUserWalk(fragment:Fragment,time: String, timeSeconds: Int, distance: String, step: Int,name:String) {
         repo.getUserWalk(time, timeSeconds, distance, step,name)
         repo.userWalk.observe(fragment, Observer {
@@ -31,5 +35,9 @@ class RunViewModel : ViewModel() {
             repo.setUserWalk(walk)
 
         }
+    }
+
+    fun requestBitmap(image: Bitmap){
+        _imageRoad.value=image
     }
 }

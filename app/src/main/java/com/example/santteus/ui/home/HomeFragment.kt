@@ -84,7 +84,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
     private lateinit var detailBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var sensorManager :SensorManager
     private lateinit var locationManager: LocationManager
-    private val polyLineOptions= PolylineOptions().width(5f).color(Color.RED)
+    private val polyLineOptions= PolylineOptions().width(5f).color(Color.parseColor("#FBAB57"))
     var latitude:Double = 0.0
     var longitude:Double = 0.0
     var latitude1:Double = 0.0
@@ -109,8 +109,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         mainActivity = context as MainActivity
         mView = binding.map
         mView.onCreate(savedInstanceState)
-
-
         setListeners()
         setBottomSheet()
         setSensorCount()
@@ -121,45 +119,39 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         mView.getMapAsync(this)
         return binding.root
     }
+
+
+    private fun capture(){
+        val road =GoogleMap.SnapshotReadyCallback {
+            if (it != null) {
+                viewModel.requestBitmap(it)
+            }
+        }
+        mMap?.snapshot(road)
+    }
     @SuppressLint("MissingPermission")
     private fun addLocationListener(){
-        // 위치 정보 요청
-        // (정보 요청할 때 넘겨줄 데이터)에 관한 객체, 위치 갱신되면 호출되는 콜백, 특정 스레드 지정(별 일 없으니 null)
         fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,null)
     }
 
 
-
     private fun locationInit(){
-        // FusedLocationProviderClient 객체 생성
-        // 이 객체의 메소드를 통해 위치 정보를 요청할 수 있음
         fusedLocationProviderClient= FusedLocationProviderClient(requireActivity())
-        // 위치 갱신되면 호출되는 콜백 생성
         locationCallback=MyLocationCallBack()
-        // (정보 요청할 때 넘겨줄 데이터)에 관한 객체 생성
         locationRequest= LocationRequest()
-        locationRequest.priority=LocationRequest.PRIORITY_HIGH_ACCURACY // 가장 정확한 위치를 요청한다,
-        locationRequest.interval=10000 // 위치를 갱신하는데 필요한 시간 <밀리초 기준>
-        locationRequest.fastestInterval=5000 // 다른 앱에서 위치를 갱신했을 때 그 정보를 가져오는 시간 <밀리초 기준>
+        locationRequest.priority=LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval=10000
+        locationRequest.fastestInterval=5000
     }
     inner class MyLocationCallBack: LocationCallback(){
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
-            // lastLocation프로퍼티가 가리키는 객체 주소를 받는다.
-            // 그 객체는 현재 경도와 위도를 프로퍼티로 갖는다.
-            // 그러나 gps가 꺼져 있거나 위치를 찾을 수 없을 때는 lastLocation은 null을 가진다.
             val location = locationResult?.lastLocation
-            //  gps가 켜져 있고 위치 정보를 찾을 수 있을 때 다음 함수를 호출한다. <?. : 안전한 호출>
             location?.run{
-                // 현재 경도와 위도를 LatLng메소드로 설정한다.
                 val latLng=LatLng(latitude,longitude)
-                // 카메라를 이동한다.(이동할 위치,줌 수치)
                 mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
-                // 마커를 추가한다.
-                //mMap?.addMarker(MarkerOptions().position(latLng).title("Changed Location"))
-                // polyLine에 좌표 추가
+                //mMap.addMarker(MarkerOptions().position(latLng).title("Changed Location"))
                 polyLineOptions.add(latLng)
-                // 선 그리기
                 mMap?.addPolyline(polyLineOptions)
             }
         }
@@ -227,10 +219,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
         //운동 시작버튼 클릭이벤트
         binding.detailBottom.btnRunStart.setOnClickListener {
-
-        }
-
-        binding.btnRun.setOnClickListener {
+            detailBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             getLocation()
             locationInit()
             addLocationListener()
@@ -241,9 +230,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
             start()
             mSteps = 0
             mStepsCount = 0
-
         }
+
         binding.mypageBottom.btnStartFinish.setOnClickListener {
+            capture()
             latitude2=latitude
             longitude2=longitude
             userDistance=DistanceManager.getDistance(latitude1,longitude1,latitude2,longitude2).toString()
