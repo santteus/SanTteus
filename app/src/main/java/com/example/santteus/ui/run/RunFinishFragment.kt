@@ -39,16 +39,15 @@ class RunFinishFragment(time: String, timeSeconds: Int, distance: String, step: 
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        //
-    }
 
     private fun setListeners() {
         binding.btnRunSave.setOnClickListener {
             RunCompleteFragment().show(parentFragmentManager, "complete")
             viewModel.requestSetUserWalk(viewModel.userWalk.value!!)
             dialog?.dismiss()
+        }
+        binding.imageButton.setOnClickListener {
+            dismiss()
         }
 
     }

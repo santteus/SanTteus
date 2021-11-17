@@ -10,6 +10,10 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.SystemClock
 import android.text.method.ScrollingMovementMethod
@@ -19,6 +23,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -37,6 +43,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.example.santteus.R;
 import com.example.santteus.ui.run.RunViewModel
+import com.example.santteus.util.DistanceManager
+import java.io.IOException
 
 class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, GoogleMap.OnMarkerClickListener {
 
@@ -72,6 +80,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var detailBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var sensorManager :SensorManager
+    private lateinit var locationManager: LocationManager
+    var latitude:Double = 0.0
+    var longitude:Double = 0.0
+    var latitude1:Double = 0.0
+    var longitude1:Double = 0.0
+    var latitude2:Double = 0.0
+    var longitude2:Double = 0.0
+    val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    val PERMISSIONS_REQUEST_CODE_GPS = 100
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,8 +110,54 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
         mMap?.let { onMapReady(it) }
         checkCategory()
-
+        getLocation()
         return binding.root
+    }
+
+    private fun getLocation(){
+        locationManager = (context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager?)!!
+        var userLocation: Location = getLatLng()
+        if(userLocation != null){
+            latitude = userLocation.latitude
+            longitude = userLocation.longitude
+            Log.d("CheckCurrentLocation", "현재 내 위치 값: ${latitude}, ${longitude}")
+
+            var mGeoCoder =  Geocoder(context, Locale.KOREAN)
+            var mResultList: List<Address>? = null
+            try{
+                mResultList = mGeoCoder.getFromLocation(
+                    latitude!!, longitude!!, 1
+                )
+            }catch(e: IOException){
+                e.printStackTrace()
+            }
+            if(mResultList != null){
+                Log.d("CheckCurrentLocation", mResultList[0].getAddressLine(0))
+            }
+        }
+    }
+
+    private fun getLatLng(): Location{
+        var currentLatLng: Location? = null
+        var hasFineLocationPermission = ContextCompat.checkSelfPermission(requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION)
+        var hasCoarseLocationPermission = ContextCompat.checkSelfPermission(requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if(hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED){
+            val locatioNProvider = LocationManager.GPS_PROVIDER
+            currentLatLng = locationManager?.getLastKnownLocation(locatioNProvider)
+        }else{
+            if(ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), REQUIRED_PERMISSIONS[0])){
+                Toast.makeText(requireContext(), "앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+                ActivityCompat.requestPermissions(requireActivity(), REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE_GPS)
+            }else{
+                ActivityCompat.requestPermissions(requireActivity(), REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE_GPS)
+            }
+            currentLatLng = getLatLng()
+        }
+        return currentLatLng!!
     }
 
     private fun setSensorCount() {
@@ -117,13 +180,21 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         }
 
         binding.btnRun.setOnClickListener {
+            getLocation()
+            latitude1=latitude
+            longitude1=longitude
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             bottomSheetBehavior.isDraggable = false
             start()
             mSteps = 0
             mStepsCount = 0
+
         }
         binding.mypageBottom.btnStartFinish.setOnClickListener {
+            latitude2=latitude
+            longitude2=longitude
+            userDistance=DistanceManager.getDistance(latitude1,longitude1,latitude2,longitude2).toString()
+            Log.d("asdf12344",userDistance.toString())
             RunFinishFragment(userTime,userTimeSeconds,userDistance,userStep,roadName).show(parentFragmentManager, "run")
             reset()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -195,7 +266,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
+        if(latitude2==0.0 && longitude2==0.0){
+            binding.mypageBottom.tvRunDistanceCount.text="0.00"
+        }else {
+            binding.mypageBottom.tvRunDistanceCount.text =
+                DistanceManager.getDistance(latitude1, longitude1, latitude, longitude).toString()
+        }
         val marker = LatLng(37.568291, 126.997780)
         mMap?.addMarker(MarkerOptions().position(marker).title("기본 위치"))
         mMap?.moveCamera(CameraUpdateFactory.newLatLng(marker))
