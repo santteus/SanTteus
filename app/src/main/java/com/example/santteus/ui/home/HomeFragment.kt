@@ -265,12 +265,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
             searchBox.setText("")
         }
 
-        binding.btnHomeList.setOnClickListener {
-            activity?.let{
-                val intent = Intent(context, HomeListActivity::class.java)
-                startActivity(intent)
-            }        }
-
         checkCategory()
     }
 
