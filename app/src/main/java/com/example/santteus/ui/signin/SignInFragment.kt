@@ -34,12 +34,12 @@ class SignInFragment : Fragment() {
         return binding.root
     }
 
-    /*override fun onStart() {
+    override fun onStart() {
         super.onStart()
         if(auth?.currentUser != null){
             findNavController().navigate(R.id.action_signInFragment_to_navigation_home)
         }
-    }*/
+    }
 
     private fun setListeners(){
         binding.btnSignIn.setOnClickListener {
@@ -67,7 +67,7 @@ class SignInFragment : Fragment() {
                         context, "로그인에 성공 하였습니다.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    findNavController().navigate(R.id.action_signInFragment_to_navigation_record)
+                    findNavController().navigate(R.id.action_signInFragment_to_navigation_home)
                 } else {
                     Toast.makeText(
                         context, "로그인에 실패 하였습니다.",
