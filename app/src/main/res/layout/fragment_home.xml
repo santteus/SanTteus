@@ -55,22 +55,6 @@
             app:layout_constraintTop_toTopOf="@+id/et_home_search"
             app:srcCompat="@drawable/ic_search" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_home_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:paddingLeft="20dp"
-            android:background="@drawable/bg_white_100"
-            android:text="@string/home_list"
-            android:drawableStart="@drawable/ic_list"
-            android:drawablePadding="-15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-
         <include
             android:id="@+id/mypage_bottom"
             layout="@layout/fragment_run_start"
