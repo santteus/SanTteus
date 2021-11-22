@@ -265,12 +265,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
             searchBox.setText("")
         }
 
-        binding.btnHomeList.setOnClickListener {
-            activity?.let{
-                val intent = Intent(context, HomeListActivity::class.java)
-                startActivity(intent)
-            }        }
-
         checkCategory()
     }
 
@@ -348,12 +342,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 DistanceManager.getDistance(latitude1, longitude1, latitude, longitude).toString()
         }
 
-        val marker = LatLng(latitude, longitude)
-        mMap?.addMarker(MarkerOptions().position(marker).title("처음 위치"))
-        mMap?.moveCamera(CameraUpdateFactory.newLatLng(marker))
+        mMap?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)))
         mMap?.moveCamera(CameraUpdateFactory.zoomTo(15f))
-
-
+        
         if (checkSelfPermission(
                 mainActivity,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -366,7 +357,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         }
 
         mMap?.isMyLocationEnabled = true
-        mMap?.moveCamera(CameraUpdateFactory.zoomTo(15f))
+        //mMap?.moveCamera(CameraUpdateFactory.zoomTo(15f))
 
         createMark()
 
