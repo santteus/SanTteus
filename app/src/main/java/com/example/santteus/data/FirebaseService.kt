@@ -15,7 +15,6 @@ class FirebaseService {
 
     val onlyDate: LocalDate = LocalDate.now()
 
-
     init {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
