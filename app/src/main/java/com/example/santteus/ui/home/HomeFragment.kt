@@ -116,9 +116,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         setDetailBottomSheet()
         mMap?.let { onMapReady(it) }
         //checkCategory()
-        getLocation()
+
+        observers()
         mView.getMapAsync(this)
         return binding.root
+    }
+
+    private fun observers(){
+        viewModel.distanceRoad.observe(viewLifecycleOwner){
+            if(it==null) {
+                binding.mypageBottom.tvRunDistanceCount.text = "0.00"
+            }else{
+                binding.mypageBottom.tvRunDistanceCount.text = it
+            }
+        }
     }
 
 
@@ -152,6 +163,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
                 val latLng=LatLng(latitude,longitude)
                 mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
                 //mMap.addMarker(MarkerOptions().position(latLng).title("Changed Location"))
+                viewModel.saveDistanceSecond(latitude,longitude)
+                viewModel.requestDistance()
                 polyLineOptions.add(latLng)
                 mMap?.addPolyline(polyLineOptions)
             }
@@ -165,7 +178,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
             latitude = userLocation.latitude
             longitude = userLocation.longitude
             Log.d("CheckCurrentLocation", "현재 내 위치 값: ${latitude}, ${longitude}")
-
+            viewModel.saveDistanceFirst(latitude,longitude)
             var mGeoCoder =  Geocoder(context, Locale.KOREAN)
             var mResultList: List<Address>? = null
             try{
@@ -224,8 +237,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
             getLocation()
             locationInit()
             addLocationListener()
-            latitude1=latitude
-            longitude1=longitude
+            //latitude1=latitude
+            //longitude1=longitude
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             bottomSheetBehavior.isDraggable = false
             start()
@@ -235,10 +248,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
         binding.mypageBottom.btnStartFinish.setOnClickListener {
             capture()
-            latitude2=latitude
-            longitude2=longitude
-            userDistance=DistanceManager.getDistance(latitude1,longitude1,latitude2,longitude2).toString()
+            //getLocation()
+            //viewModel.saveDistanceSecond(latitude,longitude)
+            //latitude2=latitude
+            //longitude2=longitude
+            //userDistance=DistanceManager.getDistance(latitude1,longitude1,latitude2,longitude2).toString()
+            userDistance=viewModel.distanceRoad.value!!
             Log.d("asdf12344",userDistance.toString())
+            //RunFinishFragment(userTime,userTimeSeconds,userDistance,userStep,roadName).show(parentFragmentManager, "run")
             RunFinishFragment(userTime,userTimeSeconds,userDistance,userStep,roadName).show(parentFragmentManager, "run")
             reset()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -341,12 +358,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        if(latitude2==0.0 && longitude2==0.0){
-            binding.mypageBottom.tvRunDistanceCount.text="0.00"
-        }else {
-            binding.mypageBottom.tvRunDistanceCount.text =
-                DistanceManager.getDistance(latitude1, longitude1, latitude, longitude).toString()
-        }
+
 
         mMap?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)))
         mMap?.moveCamera(CameraUpdateFactory.zoomTo(15f))
