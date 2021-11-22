@@ -149,70 +149,14 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <TextView
-        android:id="@+id/average"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="12dp"
-        android:text="평균"
-        android:textAlignment="center"
-        android:textColor="#767676"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
-    <TextView
-        android:id="@+id/averageNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
-        android:text="6,000"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:textColor="#222222"
-        android:textSize="32sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/average" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="18dp"
-        android:text="걸음"
-        android:textAlignment="center"
-        android:textColor="#222222"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/averageNum"
-        app:layout_constraintTop_toBottomOf="@+id/average" />
-
-    <TextView
-        android:id="@+id/term"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="2dp"
-        android:text="2021년 11월 8일 ~ 11월 14일"
-        android:textAlignment="center"
-        android:textColor="#767676"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/averageNum" />
-
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/barChart"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/term" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
