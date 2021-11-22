@@ -10,7 +10,7 @@
     <string name="home_diet">다이어트</string>
     <string name="home_strength">체력증진</string>
     <string name="home_mood">기분전환</string>
-    
+
     <!-- homelist -->
     <string name="home_name">보라매공원 산책길</string>
     <string name="home_level">매우 쉬움</string>
@@ -81,5 +81,7 @@
     <string name="withdrawal">탈퇴완료</string>
     <string name="withdrawal_sub">저희 서비스를 이용해주셔서 감사합니다.</string>
     <string name="ok">확인</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
