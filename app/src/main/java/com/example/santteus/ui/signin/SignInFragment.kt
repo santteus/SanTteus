@@ -67,7 +67,7 @@ class SignInFragment : Fragment() {
                         context, "로그인에 성공 하였습니다.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    findNavController().navigate(R.id.action_signInFragment_to_navigation_home)
+                    findNavController().navigate(R.id.action_signInFragment_to_navigation_record)
                 } else {
                     Toast.makeText(
                         context, "로그인에 실패 하였습니다.",
