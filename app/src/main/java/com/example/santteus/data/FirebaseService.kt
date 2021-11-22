@@ -1,5 +1,6 @@
 package com.example.santteus.data
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.santteus.domain.entity.Walk
 import com.google.firebase.auth.FirebaseAuth
@@ -34,7 +35,8 @@ class FirebaseService {
                         val sex = snapshot.child("sex").value.toString()
                         val kg = snapshot.child("kg").value.toString().toInt()
                         val cal = (timeSeconds / 1000) * kg
-
+                        Log.d("3333444",timeSeconds.toString())
+                        Log.d("33334asdfas",kg.toString())
                         if (sex == "true") {
                             val myRef: DatabaseReference =
                                 database.getReference("walk_avg").child("f")
@@ -53,7 +55,9 @@ class FirebaseService {
 
                                     if (step < step10) {
                                         age = 10
-                                        top = ((step / step10) * 100)
+                                        //top = ((step / step10) * 100)
+                                        top = 90
+                                        val cal = (timeSeconds / 1000) * kg
                                         val walk = Walk(time, distance, age, step, cal, top,name)
                                         userWalk.postValue(walk)
 
@@ -72,8 +76,9 @@ class FirebaseService {
                                         userWalk.postValue(walk)
 
                                         val userRefs = database.getReference("users")
-                                        userRefs.child(auth?.currentUser?.uid!!).child("data")
-                                            .setValue(Walk(time, distance, age, step, cal, top,name))
+                                        userRefs.child(auth?.currentUser?.uid!!).child("data").child(
+                                            onlyDate.toString()
+                                        ).setValue(Walk(time, distance, age, step, cal, top,name))
 
                                     } else if (step > step20 && step < step30
                                     ) {
@@ -86,8 +91,9 @@ class FirebaseService {
                                         userWalk.postValue(walk)
 
                                         val userRefs = database.getReference("users")
-                                        userRefs.child(auth?.currentUser?.uid!!).child("data")
-                                            .setValue(Walk(time, distance, age, step, cal, top,name))
+                                        userRefs.child(auth?.currentUser?.uid!!).child("data").child(
+                                            onlyDate.toString()
+                                        ).setValue(Walk(time, distance, age, step, cal, top,name))
 
                                     } else if (step > step30 && step < step40
                                     ) {
@@ -100,8 +106,9 @@ class FirebaseService {
                                         userWalk.postValue(walk)
 
                                         val userRefs = database.getReference("users")
-                                        userRefs.child(auth?.currentUser?.uid!!).child("data")
-                                            .setValue(Walk(time, distance, age, step, cal, top,name))
+                                        userRefs.child(auth?.currentUser?.uid!!).child("data").child(
+                                            onlyDate.toString()
+                                        ).setValue(Walk(time, distance, age, step, cal, top,name))
                                     } else if (step > step40 && step < step50
                                     ) {
                                         age = if (step < (step40 + step50) / 2) {
@@ -113,8 +120,9 @@ class FirebaseService {
                                         userWalk.postValue(walk)
 
                                         val userRefs = database.getReference("users")
-                                        userRefs.child(auth?.currentUser?.uid!!).child("data")
-                                            .setValue(Walk(time, distance, age, step, cal, top,name))
+                                        userRefs.child(auth?.currentUser?.uid!!).child("data").child(
+                                            onlyDate.toString()
+                                        ).setValue(Walk(time, distance, age, step, cal, top,name))
 
                                     } else if (step > step50 && step < step60
                                     ) {
@@ -127,8 +135,9 @@ class FirebaseService {
                                         userWalk.postValue(walk)
 
                                         val userRefs = database.getReference("users")
-                                        userRefs.child(auth?.currentUser?.uid!!).child("data")
-                                            .setValue(Walk(time, distance, age, step, cal, top,name))
+                                        userRefs.child(auth?.currentUser?.uid!!).child("data").child(
+                                            onlyDate.toString()
+                                        ).setValue(Walk(time, distance, age, step, cal, top,name))
 
                                     } else if (step > step60 && step < step70
                                     ) {
@@ -141,8 +150,9 @@ class FirebaseService {
                                         userWalk.postValue(walk)
 
                                         val userRefs = database.getReference("users")
-                                        userRefs.child(auth?.currentUser?.uid!!).child("data")
-                                            .setValue(Walk(time, distance, age, step, cal, top,name))
+                                        userRefs.child(auth?.currentUser?.uid!!).child("data").child(
+                                            onlyDate.toString()
+                                        ).setValue(Walk(time, distance, age, step, cal, top,name))
 
                                     } else if (step >= step70) {
                                         age = 70
@@ -150,8 +160,9 @@ class FirebaseService {
                                         userWalk.postValue(walk)
 
                                         val userRefs = database.getReference("users")
-                                        userRefs.child(auth?.currentUser?.uid!!).child("data")
-                                            .setValue(Walk(time, distance, age, step, cal, top,name))
+                                        userRefs.child(auth?.currentUser?.uid!!).child("data").child(
+                                            onlyDate.toString()
+                                        ).setValue(Walk(time, distance, age, step, cal, top,name))
                                     }
 
 
