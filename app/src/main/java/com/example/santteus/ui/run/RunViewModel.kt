@@ -31,11 +31,10 @@ class RunViewModel : ViewModel() {
     var latitude2= MutableLiveData<Double>()
     var longitude2= MutableLiveData<Double>()
 
-    /*init{
-        latitude1.value=0.0
-        longitude2.value=0.0
+    init{
+        _distanceRoad.value="0.00"
 
-    }*/
+    }
 
     fun requestUserWalk(fragment:Fragment,time: String, timeSeconds: Int, distance: String, step: Int,name:String) {
         repo.getUserWalk(time, timeSeconds, distance, step,name)
