@@ -207,8 +207,8 @@ class DayChartFragment : Fragment() {
         }
 
         var set = BarDataSet(entries,"DataSet") // 데이터셋 초기화
-        set.color = Color.parseColor("#ffffff")
-        ContextCompat.getColor(requireContext(),R.color.santtues_FF947C) // 바 그래프 색 설정
+        set.color = ContextCompat.getColor(requireContext(),R.color.santtues_FF947C)
+         // 바 그래프 색 설정
 
         val dataSet : ArrayList<IBarDataSet> = ArrayList()
         dataSet.add(set)
