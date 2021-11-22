@@ -43,12 +43,12 @@ object DistanceManager {
     }
 
     fun  DegreeToRadian( degree:Double):Double{
-        return degree * Math.PI / 180.0;
+        return degree * PI / 180.0;
     }
 
     //randian -> degree 변환
     fun  RadianToDegree( radian:Double):Double{
-        return radian * 180 / Math.PI
+        return radian * 180.toDouble() / PI
     }
 
     fun getDistance2(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
@@ -63,6 +63,25 @@ object DistanceManager {
         return distance* 1.609344
     }
 
+    fun CalculationByDistance(
+        initialLat: Double, initialLong: Double,
+        finalLat: Double, finalLong: Double
+    ): Double {
+        var initialLat = initialLat
+        var finalLat = finalLat
+        val R = 6371 // km (Earth radius)
+        val dLat = toRadians(finalLat - initialLat)
+        val dLon = toRadians(finalLong - initialLong)
+        initialLat = toRadians(initialLat)
+        finalLat = toRadians(finalLat)
+        val a = sin(dLat / 2) * sin(dLat / 2) +
+                sin(dLon / 2) * sin(dLon / 2) * cos(initialLat) * cos(finalLat)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return R * c
+    }
 
+    fun toRadians(deg: Double): Double {
+        return deg * (PI / 180)
+    }
 
 }

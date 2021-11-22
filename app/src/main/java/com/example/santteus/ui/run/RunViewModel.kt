@@ -71,7 +71,7 @@ class RunViewModel : ViewModel() {
     }
 
     fun requestDistance(){
-        _distanceRoad.value= String.format("%.2f",DistanceManager.DistanceByDegree(latitude1.value!!, longitude1.value!!, latitude2.value!!, longitude2.value!!))
+        _distanceRoad.value= String.format("%.2f",DistanceManager.CalculationByDistance(latitude1.value!!, longitude1.value!!, latitude2.value!!, longitude2.value!!))
             .toString()
         //_distanceRoad.value= String.format("%.2f", DistanceManager.getDistance2(latitude1.value!!, longitude1.value!!, latitude2.value!!, longitude2.value!!))
         Log.d("aaaaaaa", latitude1.value.toString())

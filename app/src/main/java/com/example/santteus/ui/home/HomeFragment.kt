@@ -262,7 +262,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
 
         binding.mypageBottom.btnStartFinish.setOnClickListener {
             capture()
-
+            //mView.clearAnimation()
+            mMap?.clear()
             //getLocation()
             //viewModel.saveDistanceSecond(latitude,longitude)
             //latitude2=latitude
