@@ -31,6 +31,12 @@ class RunViewModel : ViewModel() {
     var latitude2= MutableLiveData<Double>()
     var longitude2= MutableLiveData<Double>()
 
+    /*init{
+        latitude1.value=0.0
+        longitude2.value=0.0
+
+    }*/
+
     fun requestUserWalk(fragment:Fragment,time: String, timeSeconds: Int, distance: String, step: Int,name:String) {
         repo.getUserWalk(time, timeSeconds, distance, step,name)
         repo.userWalk.observe(fragment, Observer {
@@ -60,11 +66,17 @@ class RunViewModel : ViewModel() {
     fun saveDistanceSecond(lati:Double,long:Double){
         latitude2.value=lati
         longitude2.value=long
+        //_distanceRoad.value= String.format("%.2f", DistanceManager.getDistance2(latitude1.value!!, longitude1.value!!, latitude2.value!!, longitude2.value!!))
+
     }
 
     fun requestDistance(){
-
-        _distanceRoad.value= String.format("%.2f", DistanceManager.getDistance(latitude1.value!!, longitude1.value!!, latitude2.value!!, longitude2.value!!))
-        Log.d("aaaaaaa", _distanceRoad.value.toString())
+        _distanceRoad.value= String.format("%.2f",DistanceManager.DistanceByDegree(latitude1.value!!, longitude1.value!!, latitude2.value!!, longitude2.value!!))
+            .toString()
+        //_distanceRoad.value= String.format("%.2f", DistanceManager.getDistance2(latitude1.value!!, longitude1.value!!, latitude2.value!!, longitude2.value!!))
+        Log.d("aaaaaaa", latitude1.value.toString())
+        Log.d("bbbbb", longitude1.value.toString())
+        Log.d("cccccc", latitude2.value.toString())
+        Log.d("dddddd", longitude2.value.toString())
     }
 }
