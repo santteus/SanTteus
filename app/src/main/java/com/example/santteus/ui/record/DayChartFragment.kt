@@ -1,14 +1,18 @@
 package com.example.santteus.ui.record
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import com.example.santteus.MainActivity
 import com.example.santteus.R
 import com.example.santteus.databinding.FragmentDayChartBinding
 import com.github.mikephil.charting.charts.BarChart
@@ -22,20 +26,27 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.util.ArrayList
+import java.util.*
+import kotlin.math.sign
 
 
 class DayChartFragment : Fragment() {
 
     lateinit var binding:FragmentDayChartBinding
+    private var auth: FirebaseAuth? = null
+
+
 
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private val myRef: DatabaseReference = database.getReference("road")
 
-    private var date = "2021-12-25"
+    private val entries = ArrayList<BarEntry>()
+    private var stepNum : Int = 0
+    private var listNum : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,27 +55,96 @@ class DayChartFragment : Fragment() {
 
         binding= FragmentDayChartBinding.inflate(inflater,container,false)
 
-        create()
+        getData()
+
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            create()
+        }, 2000)
 
         return binding.root
     }
 
 
+    private fun getData() {
+        val todayDate: LocalDate = LocalDate.now()
 
-    // 다시!!!!
-    private fun create() {
 
-        myRef.addValueEventListener(object : ValueEventListener {
+        val dateArray = todayDate.toString().split("-").toTypedArray()
+        val cal = Calendar.getInstance()
+        cal[dateArray[0].toInt(), dateArray[1].toInt() - 1] = dateArray[2].toInt()
+        // 일주일의 첫날을 일요일로 지정한다
+        cal.firstDayOfWeek = Calendar.SUNDAY
+        // 시작일과 특정날짜의 차이를 구한다
+        val dayOfWeek = cal[Calendar.DAY_OF_WEEK] - cal.firstDayOfWeek
+        // 해당 주차의 첫째날을 지정한다
+        cal.add(Calendar.DAY_OF_MONTH, -dayOfWeek)
+
+        val sf = SimpleDateFormat("yyyy-MM-dd")
+        // 해당 주차의 첫째 날짜
+        val startDt = sf.format(cal.time)
+        // 해당 주차의 마지막 날짜 지정
+        cal.add(Calendar.DAY_OF_MONTH, 6)
+        // 해당 주차의 마지막 날짜
+        val endDt = sf.format(cal.time)
+        Log.d("날짜", "특정 날짜 = [$todayDate] >> 시작 날짜 = [$startDt], 종료 날짜 = [$endDt]")
+
+
+
+        binding.tvDayTerm.setText(startDt+"~"+endDt)
+
+        var list : ArrayList<Int> = arrayListOf<Int>(1,2,3,4,5,6,7)
+
+
+        auth = FirebaseAuth.getInstance()
+        val myRef =
+            database.getReference("users").child(auth?.currentUser?.uid!!).child("data")
+
+        myRef.orderByChild("date").startAt(startDt).endAt(endDt).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 for (snapshot in dataSnapshot.children) {
 
-                    var latitude = snapshot.child("COURS_SPOT_LA").value as Double
-                    var longitude = snapshot.child("COURS_SPOT_LO").value as Double
-                    var name = snapshot.child("WLK_COURS_NM").value as String
+                    // top = snapshot.child("name").value as String
+
+
+                    val today = snapshot.child("date").value.toString().replace("-","")
+                    val first = startDt.replace("-","")
+
+                    var minus = today.toInt() - first.toInt()
+
+                    if(minus==0){
+                        minus = 7
+                    }
+
+                    list.remove(minus)
+
+                    Log.d("list", list.toString())
+                    val x = minus.toString()
+                    val y = snapshot.child("step").value.toString()
+                    stepNum += y.toInt()
+                    listNum += 1
+
+                    Log.d("x-string", x)
+                    Log.d("y-string", y)
+                    Log.d("stepnum", stepNum.toString())
+
+                    //entries.add(BarEntry(1f,7000.0f))
+
+
+                    entries.add(BarEntry(x.toFloat(), y.toFloat()))
+
+
+
+                    stepNum = stepNum/listNum
+
+                    binding.tvDayAveragenum.setText(stepNum.toString())
+
+                    Log.d("listnum", listNum.toString())
 
                 }
             }
+
 
             override fun onCancelled(databaseError: DatabaseError) {
                 //Log.e("MainActivity", String.valueOf(databaseError.tException())); // 에러문 출력
@@ -72,32 +152,19 @@ class DayChartFragment : Fragment() {
         })
 
 
+        var listsize = list.size - 1
+        for(i: Int in 0..listsize){
+            entries.add(BarEntry(list.get(i).toFloat(),0f))
+
+        }
+
+
+    }
+
+    private fun create() {
 
         var barChart: BarChart = binding.barChart // barChart 생성
 
-
-        /* String을 LocalDate로 만들기 */
-        val dateParse = LocalDate.parse(date)
-
-        val dayOfWeek: DayOfWeek = dateParse.getDayOfWeek() // TuesDay
-
-        val dayOfWeekNumber = dayOfWeek.value
-
-        // 3. 숫자 요일 구하기
-        //int dayOfWeekNumber = dayOfWeek.getValue();
-        // 4. 숫자 요일 출력
-        Log.d("asdf", dayOfWeekNumber.toString())
-        //System.out.println(dayOfWeek); // 6
-
-
-        val entries = ArrayList<BarEntry>()
-        entries.add(BarEntry(1f,7000.0f))
-        entries.add(BarEntry(2f,6000.0f))
-        entries.add(BarEntry(3f,3500.0f))
-        entries.add(BarEntry(4f,5000.0f))
-        entries.add(BarEntry(5f,7000.0f))
-        entries.add(BarEntry(6f,10000.0f))
-        entries.add(BarEntry(7f,3500.0f))
 
         barChart.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)

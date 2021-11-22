@@ -53,6 +53,8 @@ class FirebaseService {
                                     val step60 = userSnapshot.child("60대").value.toString().toInt()
                                     val step70 = userSnapshot.child("70대").value.toString().toInt()
 
+                                    // 제일 낮은 값, 제일 높은 값
+                                    //
                                     if (step < step10) {
                                         age = 10
                                         //top = ((step / step10) * 100)
