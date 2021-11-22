@@ -2,6 +2,7 @@ package com.example.santteus.ui.record
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -58,11 +59,16 @@ class DayChartFragment : Fragment() {
         getData()
 
 
+
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
         Handler(Looper.getMainLooper()).postDelayed({
             create()
         }, 2000)
 
-        return binding.root
     }
 
 
@@ -201,7 +207,8 @@ class DayChartFragment : Fragment() {
         }
 
         var set = BarDataSet(entries,"DataSet") // 데이터셋 초기화
-        set.color = ContextCompat.getColor(requireContext(),R.color.santtues_FF947C) // 바 그래프 색 설정
+        set.color = Color.parseColor("#ffffff")
+        ContextCompat.getColor(requireContext(),R.color.santtues_FF947C) // 바 그래프 색 설정
 
         val dataSet : ArrayList<IBarDataSet> = ArrayList()
         dataSet.add(set)

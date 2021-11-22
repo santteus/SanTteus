@@ -393,7 +393,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
           mMap?.isMyLocationEnabled = true
           //mMap?.moveCamera(CameraUpdateFactory.zoomTo(15f))
 
-          createMark()
+         // createMark()
 
           googleMap.setOnMarkerClickListener(this)*/
     }
@@ -800,11 +800,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, SensorEventListener, Google
         //mMap?.moveCamera(CameraUpdateFactory.zoomTo(15f))
 
     }
-    fun observer(){
-        viewModel.distanceRoad.observe(viewLifecycleOwner){
 
-        }
-    }
 
     fun setLastLocation(lastLocation: Location) {
         val LATLNG = LatLng(lastLocation.latitude, lastLocation.longitude)
