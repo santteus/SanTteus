@@ -81,5 +81,7 @@
     <string name="withdrawal">탈퇴완료</string>
     <string name="withdrawal_sub">저희 서비스를 이용해주셔서 감사합니다.</string>
     <string name="ok">확인</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
