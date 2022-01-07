@@ -17,13 +17,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="295dp"
         android:text="기록"
-        android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="#222222"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="171dp"
-        android:layout_marginTop="73dp"
         android:layout_marginEnd="109dp"
         android:text="상위"
         android:textAlignment="center"
@@ -42,7 +41,7 @@
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/record"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/record" />
 
     <TextView
         android:id="@+id/topPercent"
@@ -78,7 +77,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="39dp"
-        android:layout_marginTop="73dp"
         android:layout_marginEnd="31dp"
         android:text="산책로 배지"
         android:textAlignment="center"
@@ -86,7 +84,7 @@
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/top"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/top" />
 
     <TextView
         android:id="@+id/badgeNum"
@@ -122,7 +120,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/tablayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -141,78 +139,16 @@
             android:layout_height="wrap_content"
             android:text="월" />
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabYear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="년" />
-
     </com.google.android.material.tabs.TabLayout>
 
-    <TextView
-        android:id="@+id/average"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="12dp"
-        android:text="평균"
-        android:textAlignment="center"
-        android:textColor="#767676"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
-    <TextView
-        android:id="@+id/averageNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
-        android:text="6,000"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:textColor="#222222"
-        android:textSize="32sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/average" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="18dp"
-        android:text="걸음"
-        android:textAlignment="center"
-        android:textColor="#222222"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/averageNum"
-        app:layout_constraintTop_toBottomOf="@+id/average" />
-
-    <TextView
-        android:id="@+id/term"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="2dp"
-        android:text="2021년 11월 8일 ~ 11월 14일"
-        android:textAlignment="center"
-        android:textColor="#767676"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/averageNum" />
-
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/barChart"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/term" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
@@ -220,7 +156,7 @@
         android:layout_height="118dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="41dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/badge_background"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
